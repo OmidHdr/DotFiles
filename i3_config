@@ -148,6 +148,7 @@ set $ws13 "13"
 set $ws14 "14"
 set $ws15 "15"
 set $ws16 "16"
+set $ws17 "17"
 
 
 
@@ -185,6 +186,7 @@ bindsym $mod+q workspace number $ws13
 bindsym $mod+e workspace number $ws14
 bindsym $mod+i workspace number $ws15
 bindsym $mod+y workspace number $ws16
+bindsym $mod+b workspace number $ws17
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1

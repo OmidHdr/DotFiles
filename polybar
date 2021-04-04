@@ -309,7 +309,7 @@ label-empty-padding = 2
 ; label-separator = |
 
 
-
+#icon
 [module/i3]
 
 type = internal/i3
@@ -336,6 +336,7 @@ ws-icon-12 = 13;
 ws-icon-13 = 14;
 ws-icon-14 = 15;
 ws-icon-15 = 16;
+ws-icon-16 = 17;
 
 
 
