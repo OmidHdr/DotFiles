@@ -1,301 +1,495 @@
-set $mod Mod4
-# i3 config file (v4)
-set $b /usr/share/fonts/font-awesome/svgs/brands/itunes-note.svg
-set $base00 #101218
-set $base01 #1f222d
-# unfocused
-#set $base02 #252936
-set $base02 #3A3E59
-set $base03 #7780a1
-set $base04 #C0C5CE
-set $base05 #d1d4e0
-set $base06 #C9CCDB
-set $base07 #ffffff
-set $base08 #ee829f
-set $base09 #f99170
-set $base0A #ffefcc
-set $base0B #a5ffe1
-set $base0C #97e0ff
-set $base0D #97bbf7
-set $base0E #c0b7f9
-set $base0F #fcc09e
-
-# set volume
-bindsym $mod+g exec $HOME/.config/volume/vol+.sh
-bindsym $mod+f exec $HOME/.config/volume/vol-.sh
-
-# set monitor light
-bindsym $mod+Ctrl+z exec .config/backlight/mines.sh
-bindsym $mod+Ctrl+x exec .config/backlight/plus.sh
+;==========================================================
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;   The README contains a lot of information
+;==========================================================
 
 
-# ranger
-bindsym $mod+Shift+f exec konsole -e ranger
+; ______________ colors ______________
+[colors]
+;background = #FF1E1E1E
+background = #3b4252
+numl = #4FA3A5
+;background-alt = #bf1e1e1e
+background-alt = #800080
+foreground = #ffffff
+foreground-alt = #ffffff
+primary = #1b9fc6
+secondary = #ffffff
+alert = #bd2c40
+;______________ end colors _____________
 
-#---Basic Definitions---# #
-set $inner_gaps 30
-set $outer_gaps 30
-set $term --no-startup-id $TERMINAL
-set $stoprec --no-startup-id dmenurecord kill
+; _______________ bar example(defualt) ________________
+[bar/example]
+width = 100%
+height = 35
+;offset-x = 1%
+;offset-y = 1%
+radius = 6.0
+fixed-center = true
+background = ${colors.background}
+foreground = ${colors.foreground}
+line-size = 1
+line-color = #00564d
+border-size = 0
+border-color = #0D00564d
+padding-left = 0
+padding-right = 1
+module-margin-left = 1
+module-margin-right = 1
+font-0 = Droid Sans Mono:style=Regular:pixelsize=10;2
+font-1 = Font Awesome 5 Brands Regular:style=Regular:pixelsize=12;2
+font-2 = siji:style=Regular:pixelsize=24;2
+font-3 = Font Awesome 5 Free:pixelsize=12;2
+font-4 = Font Awesome 5 Free Solid:pixelsize=12;2
+font-5 = Font Awesome 5 Brands:pixelsize=12;2
+modules-left =  i3
+;modules-center = xwindow 
+modules-right = xkeyboard charg bat voice pulseaudio memory cpu wireless-network wlan eth xbacklight battery filesystem temperature backlight date powermenu
+; for exersice
+;modules-right = charg bat
 
-# #---Gaps---# #
-for_window [class="^.*"] border pixel 9
-gaps inner $inner_gaps
-gaps outer $outer_gaps
+;____________ config polybar _________________
+; powermenu
+;separator = |
+tray-position = right
+tray-padding = 2
+cursor-click = pointer
+eursor-scroll = ns-resize
 
-# #---Dropdown Windows---# #
-# General dropdown window traits. The order can matter.
-for_window [instance="dropdown_*"] floating enable
-for_window [instance="dropdown_*"] move scratchpad
-for_window [instance="dropdown_*"] sticky enable
-for_window [instance="dropdown_*"] scratchpad show
-for_window [instance="dropdown_tmuxdd"] resize set 625 450
-for_window [instance="dropdown_dropdowncalc"] resize set 800 300
-for_window [instance="dropdown_tmuxdd"] border pixel 3
-for_window [instance="dropdown_dropdowncalc"] border pixel 2
-for_window [instance="dropdown_*"] move position center
-
-
-# bindsym $mod+BackSpace
-bindsym $mod+Shift+BackSpace	exec --no-startup-id prompt "Reboot computer?" "$rebootndsym $mod+t			split toggle
-bindsym $mod+Shift+y		gaps inner current set $inner_gaps; gaps outer current set $outer_gaps"
-
-
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below.
-font pango:monospace 8
-
-# screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-
-# and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
-
-# Use pactl to adjust volume in PulseAudio.
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
-# Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
-
-# start a terminal
-bindsym $mod+Return exec terminator 
-# kill focused window
-bindsym $mod+Shift+q kill
-
-# start dmenu (a program launcher)
-
-#rofi
-#bindsym $mod+d exec rofi -show run -theme fancy -font "hack 12"
-#bindsym $mod+d exec rofi -show drun -theme ~/.config/rofi/launchers/misc/kde_krunner.rasi -font "hack 12"
-# good styles are : 4-7 9 
-#bindsym $mod+d exec rofi -show drun -theme ~/.config/rofi/launchers/type-6/style-5.rasi 
-# without icons
-#bindsym $mod+d exec rofi -show drun -theme ~/.config/rofi/launchers/type-1/style-3.rasi
-# fullscreen on style 3  1-5  and  10
-bindsym $mod+d exec rofi -show drun -theme ~/.config/rofi/launchers/type-3/style-3.rasi
-# 4
-#bindsym $mod+d exec rofi -show drun -theme ~/.config/rofi/launchers/type-5/style-4.rasi
-
-
-# change focus
-bindsym $mod+j focus down
-bindsym $mod+h focus left
-bindsym $mod+k focus up
-bindsym $mod+l focus right
-bindsym $mod+semicolon focus right
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
-
-# move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
-
-# split in horizontal orientation
-bindsym $mod+t split h
-
-# split in vertical orientation
-bindsym $mod+v split v
-
-# enter fullscreen mode for the focused container
-bindsym $mod+u fullscreen toggle
-
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+z layout stacking
-bindsym $mod+a layout tabbed
-bindsym $mod+q layout toggle split
-
-# toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
-
-# change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
-
-# focus the parent container
-
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
-set $ws11 "11"
-set $ws12 "12"
-set $ws13 "13"
-set $ws14 "14"
-set $ws15 "15"
-set $ws16 "16"
-set $ws17 "17"
-set $ws18 "18"
-set $ws19 "19"
-set $ws20 "20"
-set $ws21 "21"
+#[module/pacman-updates]
+#type = custom/script
+#exec = checkupdates | wc -l
+#interval = 1000
+#label = Updates: %output%
+#format.forground = ${colors.foreground}
+#format.background = ${colors.backgroun}
+#format-prefix = " "
+#format-prefix-foreground = #ffbb00
+# format-prefix-background = #ffbb00
+; _________________________________
 
 
 
-# switch to workspace
-bindsym $mod+1 workspace number $ws1     
-bindsym $mod+2 workspace number $ws2     
-bindsym $mod+3 workspace number $ws3  
-bindsym $mod+4 workspace number $ws4     
-bindsym $mod+5 workspace number $ws5     
-bindsym $mod+6 workspace number $ws6     
-bindsym $mod+7 workspace number $ws7     
-bindsym $mod+8 workspace number $ws8     
-bindsym $mod+9 workspace number $ws9     
-bindsym $mod+0 workspace number $ws10    
-bindsym $mod+minus workspace number $ws11
-bindsym $mod+equal workspace number $ws12 
-bindsym $mod+m workspace number $ws13     
-bindsym $mod+b workspace number $ws14     
-bindsym $mod+s workspace number $ws15     
-bindsym $mod+p workspace number $ws16     
+; ____________ start func ___________
+[module/bat]
+type = custom/script
+exec = bash ~/.config/polybar/scripts/battery.sh
+
+[module/charg]
+type=custom/script
+exec = bash ~/.config/polybar/scripts/persentage.sh
+
+[module/voice]
+type=custom/script
+exec = bash ~/.config/polybar/scripts/voice.sh
+
+; _____________ end func _________________
 
 
-# move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace number $ws1
-bindsym $mod+Shift+2 move container to workspace number $ws2
-bindsym $mod+Shift+3 move container to workspace number $ws3
-bindsym $mod+Shift+4 move container to workspace number $ws4
-bindsym $mod+Shift+5 move container to workspace number $ws5
-bindsym $mod+Shift+6 move container to workspace number $ws6
-bindsym $mod+Shift+7 move container to workspace number $ws7
-bindsym $mod+Shift+8 move container to workspace number $ws8
-bindsym $mod+Shift+9 move container to workspace number $ws9
-bindsym $mod+Shift+0 move container to workspace number $ws10
-bindsym $mod+Shift+Ctrl+minus move container to workspace number $ws11
-bindsym $mod+Shift+Ctrl+equal move container to workspace number $ws12
-bindsym $mod+Shift+Ctrl+m move container to workspace number $ws13
-bindsym $mod+Shift+Ctrl+b move container to workspace number $ws14
-bindsym $mod+Shift+Ctrl+s move container to workspace number $ws15
-bindsym $mod+Shift+Ctrl+p move container to workspace number $ws16
+[module/backlight]
+;https://github.com/jaagr/polybar/wiki/Module:-backlight
+type = internal/backlight
+card = intel_backlight
+use-actual-brightness = true
+enable-scroll = true
+format = <label>
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+label = |%percentage%%  |
+; Only applies if <ramp> is used
+ramp-0 = 🌕
+ramp-1 = 🌔
+ramp-2 = 🌓
+ramp-3 = 🌒
+ramp-4 = 🌑
+; Only applies if <bar> is used
+bar-width = 10
+bar-indicator = |
+bar-fill = ─
+bar-empty = ─
+;________________ end back light __________________
+
+[module/xwindow]
+type = internal/xwindow
+label = Omid Heidary
+format = <label>
 
 
-# move Workspace between monitors
-bindsym $mod+Control+s move workspace to output DP-1
-bindsym $mod+Control+m move workspace to output eDP-1
-bindsym $mod+Control+o move workspace to output HDMI-1
 
-
-
-# reload the configuration file
-bindsym $mod+Shift+c reload
-
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
-
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-
-# resize window (you can also use the mouse for that)
-mode "resize" {
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-        # back to normal: Enter or Escape or $mod+r
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
-}
-
-bindsym $mod+r mode "resize"
-   client.focused           #01DF3A #ED6B5B    $base07 #874212
-   client.focused_inactive  $base02 $base02    $base03 $base0F
-   client.unfocused         $base02 $base02    $base03 $base0F
-   client.urgent            #c43fc4 #c43fc4    #c43fc4 #c43fc4
-
-hide_edge_borders both
-exec_always feh --bg-scale /home/sim0r/.wallpaper/Good/Programming-Wallpapers-20-1920-x-1080.jpg
-bindsym $mod+x exec /home/sim0r/Public/i3/flameshot.sh
-bindsym $mod+shift+x exec i3lock-fancy
-bindsym $mod+shift+t exec /home/sim0r/mount/sdb2/kevin/Downloads/Telegram/Telegram
-
-# tor
-bindsym $mod+shift+o exec /home/sim0r/mount/sdb2/kevin/Downloads/tor-browser_en-US/start-tor-browser.desktop
-
-
-# set persian and english keyboard  change layout with "left ALT+SHIFT"
-exec_always exec setxkbmap -option grp:switch,grp:alt_shift_toggle us,ir
-
-# play music
-#bindsym $mod+p exec /home/sim0r/.config/play/music.sh
-bindsym $mod+Shift+m exec konsole -e cmus
-
-#bindsym $mod+Ctrl+r exec xrandr --output eDP-1 --auto --output DP-1 --auto --output HDMI-1 --auto --output DP-1 --right-of eDP-1 --output HDMI-1 --right-of eDP-1
-bindsym $mod+Ctrl+l exec xrandr --output eDP-1 --auto  --output HDMI-1 --auto --output HDMI-1 --left-of eDP-1
-#bindsym $mod+Ctrl+l exec xrandr --output eDP-1 --auto --output DP-1 --auto --output HDMI-1 --auto --output DP-1 --right-of eDP-1 --output HDMI-1 --same-as eDP-1
-#bindsym $mod+Ctrl+l exec xrandr --output eDP-1 --auto --output HTMI-1 --auto --output DP-1 --auto --output eDP-1 --same-as HTMI-1
-bindsym $mod+Ctrl+t exec xrandr --output eDP-1 --auto --output DP-1 --auto --output HDMI-1 --auto --output DP-1 --right-of eDP-1 --output HDMI-1 --left-of eDP-1
-bindsym $mod+Ctrl+p exec gromit-mpx
-
-assign [class="firefox"] $ws1
-assign [class="Chromium"] $ws1
-for_window [class="Terminator"] floating enable
-assign [class="Thunar"] $ws3
-assign [class="mpv"] $ws4
-assign [class="vlc"] $ws4
-assign [class="feh"] $ws4
-assign [class="Anydesk"] $ws4
-assign [class="jetbrains-studio"] $ws5
-assign [class="Tor Browser"] $ws6
-assign [class="TelegramDesktop"] $ws8
-assign [class="Spyder"] $ws20
-assign [class="jetbrains-idea"] $ws12
-
-exec_always "setxkbmap -layout us,fa"
-# polybar
-exec_always --no-startup-id ~/.config/polybar/launch.sh
-#exec_always --no-startup-id ~/.config/polybar/polybar/launch.sh --shapes
-exec_always --no-startup-id copyq
+;__________ capslock ___________
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = capslock
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-underline = ${colors.secondary}
+label-layout = %layout%
+label-layout-underline = ${colors.secondary}
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.numl}
+label-indicator-underline = ${colors.numl}
+;_________ end caps lock __________
 
 
 
 
+[module/filesystem]
+type = internal/fs
+interval = 25
+mount-0 = /
+label-mounted =  %free%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
 
 
 
+[module/bspwm]
+type = internal/bspwm
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 2
+label-occupied = %index%
+label-occupied-padding = 2
+label-urgent = %index%!
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+label-empty = %index%
+label-empty-foreground = ${colors.foreground-alt}
+label-empty-padding = 2
+
+;________________ icons ________________
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+ws-icon-0 = 1;
+ws-icon-1 = 2; 
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;
+ws-icon-6 = 7;
+ws-icon-7 = 8;
+ws-icon-8 = 9;
+ws-icon-9 = 10;
+ws-icon-10 = 11;
+ws-icon-11 = 12;
+ws-icon-12 = 13;
+ws-icon-13 = 14;
+ws-icon-14 = 15;
+ws-icon-15 = 16;
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+; focused = Active workspace on focused monitor
+label-focused =%icon%
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 1
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %icon%
+label-unfocused-padding = 1
+; visible = Active workspace on unfocused monitor
+label-visible = %icon%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+; urgent = Workspace with urgency hint set
+label-urgent = %icon%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 1
+; Separator in between workspaces
+; label-separator = |
+
+;________________ end icons ________________
+
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
+label-song-maxlen = 25
+label-song-ellipsis = true
+
+
+;______________________________
+
+[module/xbacklight]
+
+type = internal/xbacklight
+format = <label> <bar>
+label = BL
+bar-width = 10
+bar-indicator = |
+bar-indicator-foreground = #fff
+bar-indicator-font = 2
+bar-fill = ─
+bar-fill-font = 2
+bar-fill-foreground = #9f78e1
+bar-empty = ─
+bar-empty-font = 2
+bar-empty-foreground = ${colors.foreground-alt}
+
+
+[module/backlight-acpi]
+inherit = module/xbacklight
+type = internal/backlight
+card = intel_backlight
+
+
+;_________ cpu
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix = ""
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #f90000
+label = %percentage:2%% |
+;__________ end cpu _________
+
+
+
+
+;__________ memory _______
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #4bffdc
+label = %percentage_used%% |
+;________ end memory ________
+
+
+
+;______________ wlan  _________________
+
+[module/wlan]
+type = internal/network
+interface = net1
+interval = 3.0
+format-connected = <ramp-signal> <label-connected>
+format-connected-underline = #9f78e1
+label-connected = %essid%
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+ramp-signal-foreground = ${colors.foreground-alt}
+
+[module/wireless-network]
+;https://github.com/jaagr/polybar/wiki/Module:-network
+type = internal/network
+interface = ${env:WIRELESS}
+interval = 3.0
+label-connected = %essid%
+
+format-connected = <label-connected>
+;format-connected = <ramp-signal> <label-connected>
+format-connected-foreground = ${colors.foreground}
+format-connected-background = ${colors.background}
+format-connected-prefix = "  "
+format-connected-prefix-foreground = #7e52c6
+format-connected-prefix-background = ${colors.background}
+format-connected-underline = #7e52c6
+
+label-disconnected = %ifname% disconnected
+label-disconnected-foreground = ${colors.alert}
+label-disconnected-background = ${colors.background}
+
+format-disconnected = <label-disconnected>
+format-disconnected-foreground = ${colors.alert}
+format-disconnected-background = ${colors.background}
+format-disconnected-prefix = "  "
+format-disconnected-prefix-foreground = ${colors.alert}
+format-disconnected-prefix-background = ${colors.background}
+format-disconnected-underline =${colors.alert}
+
+ramp-signal-0 = ▁
+ramp-signal-1 = ▂
+ramp-signal-2 = ▃
+ramp-signal-3 = ▄
+ramp-signal-4 = ▅
+ramp-signal-5 = ▆
+ramp-signal-6 = ▇
+ramp-signal-7 = █
+ramp-signal-foreground = #7e52c6
+
+
+[module/eth]
+type = internal/network
+interface = enp1s0
+interval = 3.0
+format-connected-underline = #55aa55
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected = %local_ip%
+format-disconnected =
+; ___________ end wlan _________________
+
+
+
+; __________ battery _____________
+[module/battery]
+;https://github.com/jaagr/polybar/wiki/Module:-battery
+type = internal/battery
+battery = BAT0
+adapter = AC0
+full-at = 100
+
+label-charging =  %percentage%%
+format-charging = <animation-charging> <label-charging>
+format-charging-foreground = ${colors.foreground}
+format-charging-background = ${colors.background}
+format-charging-underline = #a3c725
+
+label-discharging =  %percentage%%
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-underline = #c7ae25
+format-discharging-foreground = ${colors.foreground}
+format-discharging-background = ${colors.background}
+
+format-full-prefix = " "
+format-full-prefix-foreground = #a3c725
+format-full-underline = #a3c725
+format-full-foreground = ${colors.foreground}
+format-full-background = ${colors.background}
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+ramp-capacity-foreground = #c7ae25
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-foreground = #a3c725
+animation-charging-framerate = 750
+;_________________ end battery
+
+
+;_________________ date _____________
+[module/date]
+type = internal/date
+interval = 1
+date =
+date-alt = " %Y-%m-%d"
+time = %H:%M
+time-alt = %H:%M:%S
+format-prefix = 
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #0a6cf5
+label = %date% %time%
+;_____________ end date _____________
+
+
+
+;_____________ pulse audio __________
+
+[module/pulseaudio]
+type = internal/pulseaudio
+format-volume = <label-volume> <bar-volume>
+label-volume =|%percentage%% 
+label-volume-foreground = ${root.foreground}
+label-muted = 
+label-muted-foreground = #666
+bar-volume-width = 10
+bar-volume-foreground-0 = #55aa55
+bar-volume-foreground-1 = #55aa55
+bar-volume-foreground-2 = #55aa55
+bar-volume-foreground-3 = #55aa55
+bar-volume-foreground-4 = #55aa55
+bar-volume-foreground-5 = #f5a70a
+bar-volume-foreground-6 = #ff5555
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground-alt}
+;________________end audio _______________
+
+
+; ___________ start temperature _____________
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+format = |<ramp> <label> 
+format-underline = #f50a4d
+format-warn = <ramp> <label-warn>
+format-warn-underline = ${self.format-underline}
+label = %temperature-c% 
+label-warn = %temperature-c% 
+label-warn-foreground = ${colors.secondary}
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-foreground = ${colors.foreground-alt}
+; ______________ end temprature ______________
+
+
+
+;______ powermenu ________
+[module/powermenu]
+type = custom/menu
+expand-right = true
+format-spacing = 1
+label-open = 
+label-open-foreground = ${colors.secondary}
+label-close =  cancel
+label-close-foreground = ${colors.secondary}
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+menu-0-1 = reboot
+menu-0-1-exec = systemctl reboot
+menu-0-2 = power off
+menu-0-2-exec = systemctl poweroff
+menu-0-0 = suspend
+menu-0-0-exec = systemctl suspend
+;___________________
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+;pseudo-transparency = false
+
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+[bar/example]
+monitor = ${env:MONITOR:}
