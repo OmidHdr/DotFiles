@@ -1,5 +1,3 @@
 # i3
+Run : 
 ./launch.sh
-for config file and 
-./launch2.sh 
-for run theme
