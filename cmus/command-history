@@ -1,0 +1,41 @@
+colorscheme gruvbox-warm
+add ~/Music/classic
+pl-create classic
+pl-create
+colorscheme gruvbox
+colorscheme green-mono-88
+colorscheme gray-88
+colorscheme dracula
+colorscheme cyan
+colorscheme amazon
+colorscheme
+win-remove
+pl-remove
+win-remove 
+7
+:
+refresh
+add ~/Music/classic/
+set repeat_current=false
+set continue=true
+:set continue=true
+set auto-next=true
+set color_trackwin_album_bg
+set
+set auto_reshuffle=true
+set replaygain=true
+replaygain=true
+set repeat=true
+save
+prev-view
+add ~/Music/Good/
+add ~/Music/Good/*
+clear
+add ~/Music
+pl-create good
+add /home/sim0r/mount/sdb2/kevin/hold/Downloads/ODM/Music/amir_tatallo/
+pl-create tatallo
+add /home/sim0r/mount/sdb2/kevin/hold/Downloads/ODM/Music/mahasti/
+add /home/sim0r/mount/sdb2/kevin/hold/Downloads/ODM/music/mahasti/
+pl-create Mahasti
+help
