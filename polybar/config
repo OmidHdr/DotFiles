@@ -1,0 +1,345 @@
+;==========================================================
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;   The README contains a lot of information
+;==========================================================
+
+
+; ______________ colors ______________
+[colors]
+
+;backBorder = #9fafca
+;backBorder = #79a7d3
+backBorder = #7e9680
+numl = #4FA3A5
+background = #6b7b8c
+foreground = #2c2a2f
+background-alt = #e52165
+primary = #1b9fc6
+alert = #bd2c40
+purple = #53089b
+pink = #AA336A
+darkPink = #e52165
+white = #fae0e5
+blue = #076678
+yellow = #e2d810
+orange = #af3a03
+green = #0c5c0b
+red = #ff0000
+jighari =  #b20238
+ghahvei = #322514
+darkPurple = #0d1137
+
+;______________ end colors _____________
+
+; _______________ bar example(defualt) ________________
+[bar/example]
+width = 100%
+height = 35
+;offset-x = 5%
+;offset-y = 1%
+radius = 9.0
+fixed-center = true
+enable-ipc = true
+
+background = ${colors.backBorder}
+foreground = ${colors.foreground}
+line-size = 3
+
+line-color = #00564d
+
+border-size = 1
+border-color = #0D00564d
+
+padding-left = 5
+padding-right = 10
+
+module-margin-left = 5
+module-margin-right = 3
+
+font-0 = Droid Sans Mono:style=Regular:pixelsize=10;2
+font-1 = Font Awesome 5 Brands Regular:style=Regular:pixelsize=12;2
+font-2 = siji:style=Regular:pixelsize=24;2
+font-3 = Font Awesome 5 Free:pixelsize=12;2
+font-4 = Font Awesome 5 Free Solid:pixelsize=12;2
+font-5 = Font Awesome 5 Brands:pixelsize=12;2
+;________________________________________________________________
+
+
+
+modules-left =  i3
+;modules-center = xwindow
+modules-right = xkeyboard voice pulseaudio memory wlan xbacklight filesystem cpu temperature backlight date powermenu
+
+
+;____________ config polybar _________________
+; powermenu
+;separator = |
+tray-position = right
+tray-padding = 4
+cursor-click = pointer
+eursor-scroll = ns-resize
+
+
+;__________ pacman _____________
+[module/pacman]
+type = custom/script
+exec = checkupdates | wc -l
+interval = 2000
+label = Repo : %output%
+format-foreground = ${colors.blue}
+format-background = ${colors.pink}
+format-prefix = "󰧩"
+format-prefix-foreground = #FFBB00
+;click-left = /usr/local/bin/update.sh execute
+
+;_____________ xwindow ____________
+[module/xwindow]
+;https://github.com/jaagr/polybar/wiki/Module:-xwindow
+type = internal/xwindow
+
+; Available tokens:
+;   %title%
+; Default: %title%
+label = %title%
+label-maxlen = 50
+
+format-foreground = ${colors.foreground}
+format-background = ${colors.backBorder}
+
+; ____________ start func ___________
+[module/bat]
+type = custom/script
+exec = bash ~/.config/polybar/scripts/battery.sh
+
+[module/charg]
+type=custom/script
+exec = bash ~/.config/polybar/scripts/persentage.sh
+
+[module/voice]
+type=custom/script
+exec = bash ~/.config/polybar/scripts/voice.sh
+
+; _____________ end func _________________
+
+
+
+;__________ capslock ___________
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = capslock
+format-prefix = " "
+format-underline = ${colors.purple}
+format-prefix-foreground = ${colors.purple}
+label-layout = %layout%
+label-layout-foreground = ${colors.purple}
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-foreground = ${colors.purple}
+;_________ end caps lock __________
+
+
+
+;____________ file System _______________
+[module/filesystem]
+type = internal/fs
+interval = 25
+mount-0 = /
+label-mounted =  %free%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.pink}
+label-mounted-underline = ${colors.pink}
+label-mounted-foreground = ${colors.pink}
+
+;________________ icons ________________
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;
+ws-icon-6 = 7;
+ws-icon-7 = 8;
+ws-icon-8 = 9;
+ws-icon-9 = 10;
+ws-icon-10 = 11;
+ws-icon-11 = 12;
+ws-icon-12 = 13;
+ws-icon-13 = 14;
+ws-icon-14 = 15;
+ws-icon-15 = 16;
+ws-icon-16 = 17;
+;; unlock-icon    docker-icon   debug-icon  android-icon  key-icon 
+;; spyder  (ws-icon-15) mask  robot  music  python  
+
+label-mode-padding = 5
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+; focused = Active workspace on focused monitor
+label-focused =%icon%
+label-focused-foreground = ${colors.red}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 5
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %icon%
+label-unfocused-padding = 5
+; visible = Active workspace on unfocused monitor
+label-visible = %icon%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+; urgent = Workspace with urgency hint set
+label-urgent = %icon%
+label-urgent-foreground = ${colors.purple}
+label-urgent-underline = ${colors.red}
+label-urgent-padding = 5
+; Separator in between workspaces
+; label-separator = |
+
+;________________ end icons ________________
+
+
+;_________ cpu
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix = "   "
+format-prefix-foreground = ${colors.green}
+format-underline = ${colors.green}
+label = %percentage:2%%
+label-foreground = ${colors.green}
+
+;__________ end cpu _________
+
+
+;__________ memory _______
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = " "
+format-prefix-foreground = ${colors.ghahvei}
+format-underline = ${colors.ghahvei}
+label = %percentage_used%%
+label-foreground = ${colors.ghahvei}
+;________ end memory ________
+
+;____________ swap ___________
+[module/swap]
+type = internal/swap
+interval = 2
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #4bffdc
+label = %percentage:2%% |
+
+
+;_________________ date _____________
+[module/date]
+type = internal/date
+interval = 1
+date =
+date-alt = " %Y-%m-%d"
+time = %H:%M
+time-alt = %H:%M:%S
+format-prefix = 
+format-prefix-foreground = ${colors.darkPurple}
+format-underline = ${colors.darkPurple}
+label = %date% %time%
+label-foreground = ${colors.darkPurple}
+;_____________ end date _____________
+
+
+;_____________ pulse audio __________
+[module/pulseaudio]
+type = internal/pulseaudio
+format-volume = <label-volume> <bar-volume>
+format-volume-underline = ${colors.orange}
+label-volume =%percentage%% 
+label-volume-foreground = ${colors.orange}
+label-muted = |  |
+label-muted-foreground = #666
+bar-volume-width = 10
+bar-volume-foreground-0 = #55aa55
+bar-volume-foreground-1 = #55aa55
+bar-volume-foreground-2 = #55aa55
+bar-volume-foreground-3 = #55aa55
+bar-volume-foreground-4 = #55aa55
+bar-volume-foreground-5 = #f5a70a
+bar-volume-foreground-6 = #ff5555
+bar-volume-gradient = false
+;bar-volume-indicator = |
+bar-volume-indicator = 
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground-alt}
+;________________end audio _______________
+
+
+; ___________ start temperature _____________
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+format = <ramp> <label> 
+format-underline = ${colors.blue}
+format-foreground = ${colors.blue}
+format-warn = <ramp> <label-warn>
+
+label = %temperature-c% 
+label-warn = %temperature-c% 
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+; ______________ end temprature ______________
+
+;______ powermenu ________
+[module/powermenu]
+type = custom/menu
+expand-right = true
+format-spacing = 1
+label-open =    
+label-open-foreground = ${colors.jighari}
+label-close =  cancel
+label-close-foreground = ${colors.jighari}
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+format-underline = ${colors.jighari}
+format-foreground = ${colors.jighari}
+menu-0-1 = reboot
+menu-0-1-exec = systemctl reboot
+menu-0-2 = power off
+menu-0-2-exec = systemctl poweroff
+menu-0-0 = suspend
+menu-0-0-exec = systemctl suspend
+;___________________
+
+;__________ settings __________
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+pseudo-transparency = true
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+[bar/example]
+monitor = ${env:MONITOR:}
