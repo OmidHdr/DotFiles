@@ -105,7 +105,7 @@ map gr cd /
 
 #----- see the size of folder ------
 cmd folder_size ${{
-    folder_size=$(sudo du -sh . | awk '{print $1}')
+    folder_size=$(du -sh . | awk '{print $1}')
     lf -remote "send $id echo 'Size of current folder: $folder_size'"
 }}
 map <c-q> :folder_size
