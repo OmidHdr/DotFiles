@@ -7,17 +7,10 @@ set previewer ~/.config/lf/preview
 set preview true
 set cleaner ~/.config/lf/cleaner
 set ratios 1:2:3
-#set $EDITOR lvim
 
 # Custom Functions
-
 cmd mkdir $mkdir -p "$(echo $* | tr ' ' '\ ')"
-
-cmd mkfile ${{
-  printf "File Name: "
-  read ans
-  touch $ans
-}}
+cmd mkfile $touch "$(echo $* | tr ' ' '\ ')"
 
 cmd video ${{
   echo "1. Open with VLC"
@@ -93,7 +86,7 @@ map <c-v> paste
 map <c-c> copy
 map <enter> open
 map R reload
-map <c-f> mkfile
+map <c-f> push :mkfile<space>
 map <c-n> push :mkdir<space>
 map bg setwallpaper
 map C clear
@@ -109,3 +102,10 @@ map gl cd /run/media/backup/learn
 map gt cd ~/.local/share/Trash/files
 map go cd /opt
 map gr cd /
+
+#----- see the size of folder ------
+cmd folder_size ${{
+    folder_size=$(sudo du -sh . | awk '{print $1}')
+    lf -remote "send $id echo 'Size of current folder: $folder_size'"
+}}
+map <c-q> :folder_size

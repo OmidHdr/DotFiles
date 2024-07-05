@@ -75,7 +75,12 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
 		batorcat --language=cpp "$1"
 		;;
 	*)
-		batorcat "$1"
+		if [ -d "$1" ]; then
+			du -sh "$1"
+		else
+			batorcat "$1"
+		fi
 		;;
 esac
 exit 0
+
