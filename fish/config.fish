@@ -63,3 +63,15 @@ alias la 'ls -a'
 alias lla 'ls -la'
 alias lt 'ls --tree'
 alias vim 'lvim'
+
+
+# File Manager
+function fcd
+    cd (find . -type d -not -path '*/\.*' | fzf --exact)
+end
+
+
+function open
+    xdg-open (find . -type f -not -path '*/\.*' | fzf --exact) &
+end
+
