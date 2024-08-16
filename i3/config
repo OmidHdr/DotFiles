@@ -33,7 +33,7 @@ set $base0F #fcc09e
 bindsym $mod+g exec $HOME/.config/volume/vol+.sh
 bindsym $mod+f exec $HOME/.config/volume/vol-.sh
 
-bindsym $mod+e exec konsole
+bindsym $mod+e exec gnome-terminal
 
 # set monitor light
 bindsym $mod+Ctrl+z exec brightnessctl s 50-
