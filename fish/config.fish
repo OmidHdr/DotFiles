@@ -65,13 +65,62 @@ alias lt 'ls --tree'
 alias vim 'lvim'
 
 
-# File Manager
+# --- File Manager ---
 function fcd
     cd (find . -type d -not -path '*/\.*' | fzf --exact)
 end
 
-
+# --- open with shourcut key ---
 function open
     xdg-open (find . -type f -not -path '*/\.*' | fzf --exact) &
 end
+
+# --- getpath of the files ---
+function getpath
+    fd -t f | fzf --exact| sed -E 's/ /\\\\ /g; s/([()])/\\\\\1/g; s/([\[\]])/\\\\\1/g' | tr -d '\n' | xclip -selection c
+end
+
+
+# -- remove in pro way ---
+alias prorm 'cp $(find -type f | fzf -m)'
+
+
+# --- copy in pro way ---
+function procp
+    set -l files (find -type f -not -path '*/.*' | sed -E 's/ /\\\\ /g; s/([()])/\\\\\1/g; s/([\[\]])/\\\\\1/g' | fzf --multi --exact --preview 'cat {}' --preview-window=up:30%:wrap)
+    # انتخاب فایل‌ها با fzf
+    
+    # اگر هیچ فایلی انتخاب نشده باشد، خروج
+    if test -z "$files"
+        echo "No files selected."
+        return 1
+    end
+
+    # ایجاد دستور rsync
+    set -l command "rsync -avh --progress $files ~/"
+    
+    # ذخیره دستور به کلیپ‌بورد
+    printf '%s' "$command" | xclip -selection c
+
+end
+
+# --- move in pro way ---
+function promv
+    # انتخاب فایل‌ها با fzf
+    set -l files (find -type f -not -path '*/.*' | sed -E 's/ /\\\\ /g; s/([()])/\\\\\1/g; s/([\[\]])/\\\\\1/g' | fzf --multi --exact --preview 'cat {}' --preview-window=up:30%:wrap)
+    
+    # اگر هیچ فایلی انتخاب نشده باشد، خروج
+    if test -z "$files"
+        echo "No files selected."
+        return 1
+    end
+
+    # ایجاد دستور rsync
+    set -l command "rsync -avh --progress --remove-source-files $files ~/"
+    
+    # ذخیره دستور به کلیپ‌بورد
+    printf '%s' "$command" | xclip -selection c
+
+end
+
 
