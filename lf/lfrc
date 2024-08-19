@@ -74,7 +74,7 @@ map <c-t> restore_trash
 
 map au unarchive
 map aw execute
-map ao video
+map av video
 
 # Basic Functions
 map . set hidden!
@@ -109,3 +109,11 @@ cmd folder_size ${{
     lf -remote "send $id echo 'Size of current folder: $folder_size'"
 }}
 map <c-q> :folder_size
+
+cmd mountPhone ${{
+    python_output=$(python3 ~/Public/phoneMount.py)
+    lf -remote "send $id echo 'Python Output: $python_output'"
+}}
+map ap mountPhone
+
+
