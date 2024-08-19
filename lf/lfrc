@@ -157,10 +157,7 @@ map <c-f> push :mkfile<space>
 map <c-n> push :mkdir<space>
 map bg setwallpaper
 map C clear
-map au unarchive
-map aw execute
-map av video
-map ap mountPhone
+
 
 # --- Movement ---
 map gd cd ~/Documents
@@ -174,6 +171,17 @@ map gb cd /run/media/backup
 map gt cd ~/.local/share/Trash/files
 map go cd /opt
 map gr cd /
+
+# create z menu
+map zm chmod
+map zo chown
+map zk sudomkfile
+map zu unarchive
+map zw execute
+map zp video
+map zu unarchive
+map zv video
+map zp mountPhone
 
 # --- Rename Files ---
 map A :rename; cmd-end # at the very end
