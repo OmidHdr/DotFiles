@@ -82,7 +82,7 @@ end
 
 
 # -- remove in pro way ---
-alias prorm 'cp $(find -type f | fzf -m)'
+alias prorm 'rm $(find -type f | fzf -m --exact)'
 
 
 # --- copy in pro way ---
