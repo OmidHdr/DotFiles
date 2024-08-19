@@ -30,7 +30,6 @@ cmd video ${{
 esac
 }}
 
-
 # Archive bindings
 cmd unarchive ${{
   case "$f" in
@@ -68,55 +67,6 @@ cmd restore_trash ${{
   trash-restore
 }}
 
-# Bindings
-
-map <c-t> restore_trash
-
-map au unarchive
-map aw execute
-map av video
-
-# Basic Functions
-map . set hidden!
-map <c-h> set hidden!
-map <c-d> delete
-map p paste
-map <c-x> cut
-map <c-v> paste
-map <c-c> copy
-map <enter> open
-map R reload
-map <c-f> push :mkfile<space>
-map <c-n> push :mkdir<space>
-map bg setwallpaper
-map C clear
-
-# Movement
-map gd cd ~/Documents
-map gD cd ~/Downloads
-map gp cd ~/Pictures
-map gP cd ~/Public
-map gc cd ~/.config
-map gm cd /run/media/backup/Movie
-map gl cd /run/media/backup/learn
-map gb cd /run/media/backup
-map gt cd ~/.local/share/Trash/files
-map go cd /opt
-map gr cd /
-
-#----- see the size of folder ------
-cmd folder_size ${{
-    folder_size=$(du -sh . | awk '{print $1}')
-    lf -remote "send $id echo 'Size of current folder: $folder_size'"
-}}
-map <c-q> :folder_size
-
-cmd mountPhone ${{
-    python_output=$(python3 ~/.config/python/phoneMount.py)
-    lf -remote "send $id echo 'Python Output: $python_output'"
-}}
-map ap mountPhone
-
 cmd bulkrename ${{
     tmpfile_old="$(mktemp)"
     tmpfile_new="$(mktemp)"
@@ -138,9 +88,108 @@ cmd bulkrename ${{
     lf -remote "send $id unselect"
 }}
 
+cmd cp_root ${{
+    f -save -echo $fx | while read file; do
+        dest=$(lf -remote "send $id echo 'select destination file'"); # Prompt to select destination
+        sudo cp -r "$file" "$dest"
+    done
+}}
+
+cmd chmod ${{
+  printf "Mode chmod: "
+  read ans
+
+  for file in "$fx"
+  do
+    sudo chmod $ans $file
+  done
+
+  lf -remote 'send reload'
+}}
+
+
+cmd chown ${{
+  printf "Mode owner: "
+  read ans
+
+  for file in "$fx"
+  do
+    sudo chown $ans $file
+  done
+
+  lf -remote 'send reload'
+}}
+
+
+cmd sudomkfile ${{
+  printf "File Name: "
+  read ans
+  sudo $EDITOR $ans
+}}
+
+# ----- see the size of folder ------
+cmd folder_size ${{
+    folder_size=$(du -sh . | awk '{print $1}')
+    lf -remote "send $id echo 'Size of current folder: $folder_size'"
+}}
+
+# --- Mount Phone ----
+cmd mountPhone ${{
+    python_output=$(python3 ~/.config/python/phoneMount.py)
+    lf -remote "send $id echo 'Python Output: $python_output'"
+}}
+
+
+# Bindings Functions
+map . set hidden!
+map <c-t> restore_trash
+map <c-q> :folder_size
+map <c-r> :cp_root
+map <c-h> set hidden!
+map <c-d> delete
+map p paste
+map <c-x> cut
+map <c-v> paste
+map <c-c> copy
+map <enter> open
+map R reload
+map <c-f> push :mkfile<space>
+map <c-n> push :mkdir<space>
+map bg setwallpaper
+map C clear
+map au unarchive
+map aw execute
+map av video
+map ap mountPhone
+
+# --- Movement ---
+map gd cd ~/Documents
+map gD cd ~/Downloads
+map gp cd ~/Pictures
+map gP cd ~/Public
+map gc cd ~/.config
+map gm cd /run/media/backup/Movie
+map gl cd /run/media/backup/learn
+map gb cd /run/media/backup
+map gt cd ~/.local/share/Trash/files
+map go cd /opt
+map gr cd /
+
+# --- Rename Files ---
 map A :rename; cmd-end # at the very end
 map c push A<c-u> # new rename
 map I :rename; cmd-home # at the very beginning
 map i :rename # before extension
 map a :rename; cmd-right # after extension
 map B bulkrename
+
+
+
+
+
+
+
+
+
+
+
