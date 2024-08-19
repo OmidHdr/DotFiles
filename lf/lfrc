@@ -96,6 +96,7 @@ map r rename # at the very end
 map gd cd ~/Documents
 map gD cd ~/Downloads
 map gp cd ~/Pictures
+map gP cd ~/Public
 map gc cd ~/.config
 map gm cd /run/media/backup/Movie
 map gl cd /run/media/backup/learn
@@ -111,7 +112,7 @@ cmd folder_size ${{
 map <c-q> :folder_size
 
 cmd mountPhone ${{
-    python_output=$(python3 ~/Public/phoneMount.py)
+    python_output=$(python3 ~/.config/python/phoneMount.py)
     lf -remote "send $id echo 'Python Output: $python_output'"
 }}
 map ap mountPhone

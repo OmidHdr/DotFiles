@@ -282,7 +282,7 @@ exec --no-startup-id nitrogen --restore
 #exec_always feh --bg-scale /home/h0p3/.wallpaper/Good/27.jpg
 
 
-bindsym $mod+x exec /home/h0p3/Public/i3/flameshot.sh
+bindsym $mod+x exec ~/.config/bash/flameshot.sh
 bindsym $mod+shift+l exec i3lock-fancy
 bindsym $mod+shift+t exec /home/h0p3/Downloads/Telegram
 
