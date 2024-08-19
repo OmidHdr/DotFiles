@@ -90,7 +90,6 @@ map <c-f> push :mkfile<space>
 map <c-n> push :mkdir<space>
 map bg setwallpaper
 map C clear
-map r rename # at the very end
 
 # Movement
 map gd cd ~/Documents
@@ -100,6 +99,7 @@ map gP cd ~/Public
 map gc cd ~/.config
 map gm cd /run/media/backup/Movie
 map gl cd /run/media/backup/learn
+map gb cd /run/media/backup
 map gt cd ~/.local/share/Trash/files
 map go cd /opt
 map gr cd /
@@ -117,4 +117,30 @@ cmd mountPhone ${{
 }}
 map ap mountPhone
 
+cmd bulkrename ${{
+    tmpfile_old="$(mktemp)"
+    tmpfile_new="$(mktemp)"
 
+    [ -n "$fs" ] && fs=$(basename -a $fs) || fs=$(ls)
+
+    echo "$fs" > "$tmpfile_old"
+    echo "$fs" > "$tmpfile_new"
+    $EDITOR "$tmpfile_new"
+
+    [ "$(wc -l < "$tmpfile_old")" -eq "$(wc -l < "$tmpfile_new")" ] || { rm -f "$tmpfile_old" "$tmpfile_new"; exit 1; }
+
+    paste "$tmpfile_old" "$tmpfile_new" | while IFS="$(printf '\t')" read -r src dst
+    do
+        [ "$src" = "$dst" ] || [ -e "$dst" ] || mv -- "$src" "$dst"
+    done
+
+    rm -f "$tmpfile_old" "$tmpfile_new"
+    lf -remote "send $id unselect"
+}}
+
+map A :rename; cmd-end # at the very end
+map c push A<c-u> # new rename
+map I :rename; cmd-home # at the very beginning
+map i :rename # before extension
+map a :rename; cmd-right # after extension
+map B bulkrename
