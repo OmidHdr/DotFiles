@@ -139,6 +139,12 @@ cmd mountPhone ${{
     lf -remote "send $id echo 'Python Output: $python_output'"
 }}
 
+# --- Add Subtitle to mpv ---
+cmd subtitle ${{
+    sub_file="$f"
+    #mpv --sub-file="$sub_file" --player-operation-mode=pseudo-gui --force-window=immediate &
+    echo "sub-add \"$sub_file\"" | socat - /tmp/mpvsocket
+}}
 
 # Bindings Functions
 map . set hidden!
@@ -182,6 +188,7 @@ map zp video
 map zu unarchive
 map zv video
 map zp mountPhone
+map zs subtitle
 
 # --- Rename Files ---
 map A :rename; cmd-end # at the very end
@@ -190,14 +197,4 @@ map I :rename; cmd-home # at the very beginning
 map i :rename # before extension
 map a :rename; cmd-right # after extension
 map B bulkrename
-
-
-
-
-
-
-
-
-
-
 
