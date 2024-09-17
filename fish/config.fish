@@ -10,7 +10,11 @@ set -x BROWSER /usr/bin/brave
 
 # Export paths
 set -x PATH $PATH /home/h0p3/.local/bin /opt/clion-2022.3.1/bin /opt/oracle/product/18c/dbhomeXE/bin
-set -x JAVA_HOME /usr/lib/jvm/default
+#set -x JAVA_HOME /usr/lib/jvm/default
+set -U fish_user_paths ~/.local/share/jdtls/bin $fish_user_paths
+set -x JAVA_HOME /usr/lib/jvm/java-17-openjdk
+set -x PATH $JAVA_HOME/bin $PATH
+
 
 #----- shell theme config --------
 set -g theme_powerline_fonts yes
@@ -65,30 +69,28 @@ alias lt 'ls --tree'
 alias vim 'lvim'
 
 
-# --- File Manager ---
-function fcd
-    cd (find . -type d -not -path '*/\.*' | fzf --exact)
-end
+# --------------------- Fuzzy Stuff ---------------------
+alias fcd='cd $(fd -t d | fzf --exact)'
 
-# --- open with shourcut key ---
 function open
-    xdg-open (find . -type f -not -path '*/\.*' | fzf --exact) &
+    set -l file (find -type f -not -path '*/.*' | fzf --exact)
+    if test -n "$file"
+        nohup xdg-open "$file" > /dev/null 2>&1 &
+    end
 end
 
-# --- getpath of the files ---
+
 function getpath
-    fd -t f | fzf --exact| sed -E 's/ /\\\\ /g; s/([()])/\\\\\1/g; s/([\[\]])/\\\\\1/g' | tr -d '\n' | xclip -selection c
+    fd -t f | fzf --exact | sed -E 's/ /\\\\ /g; s/([()])/\\\\\1/g; s/([\[\]])/\\\\\1/g' | tr -d '\n' | xclip -selection c
 end
 
 
-# -- remove in pro way ---
 alias prorm 'rm $(find -type f | fzf -m --exact)'
 
 
-# --- copy in pro way ---
 function procp
-    set -l files (find -type f -not -path '*/.*' | sed -E 's/ /\\\\ /g; s/([()])/\\\\\1/g; s/([\[\]])/\\\\\1/g' | fzf --multi --exact --preview 'cat {}' --preview-window=up:30%:wrap)
     # انتخاب فایل‌ها با fzf
+    set -l files (find -type f -not -path '*/.*' | sed -E 's/ /\\\\ /g; s/([()])/\\\\\1/g; s/([\[\]])/\\\\\1/g' | fzf --multi --exact --preview 'cat {}' --preview-window=up:30%:wrap)
     
     # اگر هیچ فایلی انتخاب نشده باشد، خروج
     if test -z "$files"
@@ -104,7 +106,6 @@ function procp
 
 end
 
-# --- move in pro way ---
 function promv
     # انتخاب فایل‌ها با fzf
     set -l files (find -type f -not -path '*/.*' | sed -E 's/ /\\\\ /g; s/([()])/\\\\\1/g; s/([\[\]])/\\\\\1/g' | fzf --multi --exact --preview 'cat {}' --preview-window=up:30%:wrap)
@@ -122,5 +123,87 @@ function promv
     printf '%s' "$command" | xclip -selection c
 
 end
+
+function fkill
+    set pid (ps -e | fzf | awk '{print $1}')
+    if test -n "$pid"
+        kill -9 $pid
+    end
+end
+
+function fssh
+    set cmd (history | grep ssh | fzf)
+    if test -n "$cmd"
+        eval $cmd
+    end
+end
+
+bind \ck fkill
+bind \cs fssh
+
+# Set up colors for fzf
+set fg "#CBE0F0"
+set bg "#011628"
+set bg_highlight "#143652"
+set purple "#B388FF"
+set blue "#06BCE4"
+set cyan "#2CF9ED"
+
+set -x FZF_DEFAULT_OPTS --color=fg:$fg,bg:$bg,hl:$purple,fg+:$fg,bg+:$bg_highlight,hl+:$purple,info:$blue,prompt:$cyan,pointer:$cyan,marker:$cyan,spinner:$cyan,header:$cyan
+
+# Use fd instead of fzf
+set -x FZF_DEFAULT_COMMAND "fd --hidden --strip-cwd-prefix --exclude .git"
+set -x FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND"
+set -x FZF_ALT_C_COMMAND "fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+function _fzf_compgen_path
+    fd --hidden --exclude .git . $argv
+end
+
+function _fzf_compgen_dir
+    fd --type=d --hidden --exclude .git . $argv
+end
+
+# Preview setup for files and directories
+set show_file_or_dir_preview "if test -d {}; eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; end"
+set -x FZF_CTRL_T_OPTS "--preview '$show_file_or_dir_preview'"
+set -x FZF_ALT_C_OPTS "--preview 'eza --tree --color=always {} | head -200'"
+
+# ---- Bat (better cat) ----
+#set -x BAT_THEME "tokyonight_night"
+
+# ---- TheFuck ----
+# Function for using 'thefuck' with Fish shell
+
+function fuck -d "Correct your previous console command"
+    set -l fucked_up_command (history | head -n1)
+    set -l unfucked_command (env TF_SHELL=fish TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $fucked_up_command $argv)
+    
+    if test -n "$unfucked_command"
+        eval $unfucked_command
+        history delete --exact --case-sensitive -- $fucked_up_command
+        history merge
+    end
+end
+
+function fk -d "Correct your previous console command"
+    set -l fucked_up_command (history | head -n1)
+    set -l unfucked_command (env TF_SHELL=fish TF_ALIAS=fk PYTHONIOENCODING=utf-8 thefuck $fucked_up_command $argv)
+    
+    if test -n "$unfucked_command"
+        eval $unfucked_command
+        history delete --exact --case-sensitive -- $fucked_up_command
+        history merge
+    end
+end
+
+# ---- Zoxide (better cd) ----
+zoxide init fish | source
+alias cd="z"
+
+# -------------------- End of Fuzzy Stuff -----------------------------
+
+
+
 
 
