@@ -72,7 +72,7 @@ alias vim 'lvim'
 # --------------------- Fuzzy Stuff ---------------------
 alias fcd='cd $(fd -t d | fzf --exact)'
 
-function open
+function fopen
     set -l file (find -type f -not -path '*/.*' | fzf --exact)
     if test -n "$file"
         nohup xdg-open "$file" > /dev/null 2>&1 &
@@ -80,15 +80,15 @@ function open
 end
 
 
-function getpath
+function fpath
     fd -t f | fzf --exact | sed -E 's/ /\\\\ /g; s/([()])/\\\\\1/g; s/([\[\]])/\\\\\1/g' | tr -d '\n' | xclip -selection c
 end
 
 
-alias prorm 'rm $(find -type f | fzf -m --exact)'
+alias frm 'rm $(find -type f | fzf -m --exact)'
 
 
-function procp
+function fcp
     # انتخاب فایل‌ها با fzf
     set -l files (find -type f -not -path '*/.*' | sed -E 's/ /\\\\ /g; s/([()])/\\\\\1/g; s/([\[\]])/\\\\\1/g' | fzf --multi --exact --preview 'cat {}' --preview-window=up:30%:wrap)
     
@@ -106,7 +106,7 @@ function procp
 
 end
 
-function promv
+function fmv
     # انتخاب فایل‌ها با fzf
     set -l files (find -type f -not -path '*/.*' | sed -E 's/ /\\\\ /g; s/([()])/\\\\\1/g; s/([\[\]])/\\\\\1/g' | fzf --multi --exact --preview 'cat {}' --preview-window=up:30%:wrap)
     
@@ -149,7 +149,8 @@ set purple "#B388FF"
 set blue "#06BCE4"
 set cyan "#2CF9ED"
 
-set -x FZF_DEFAULT_OPTS --color=fg:$fg,bg:$bg,hl:$purple,fg+:$fg,bg+:$bg_highlight,hl+:$purple,info:$blue,prompt:$cyan,pointer:$cyan,marker:$cyan,spinner:$cyan,header:$cyan
+#set -x FZF_DEFAULT_OPTS --color=fg:$fg,bg:$bg,hl:$purple,fg+:$fg,bg+:$bg_highlight,hl+:$purple,info:$blue,prompt:$cyan,pointer:$cyan,marker:$cyan,spinner:$cyan,header:$cyan
+set -x FZF_DEFAULT_OPTS "--exact --color=fg:$fg,bg:$bg,hl:$purple,fg+:$fg,bg+:$bg_highlight,hl+:$purple,info:$blue,prompt:$cyan,pointer:$cyan,marker:$cyan,spinner:$cyan,header:$cyan"
 
 # Use fd instead of fzf
 set -x FZF_DEFAULT_COMMAND "fd --hidden --strip-cwd-prefix --exclude .git"
@@ -171,6 +172,9 @@ set -x FZF_ALT_C_OPTS "--preview 'eza --tree --color=always {} | head -200'"
 
 # ---- Bat (better cat) ----
 #set -x BAT_THEME "tokyonight_night"
+
+# ---- Eza (better ls) ----
+#alias ls="eza --icons=always"
 
 # ---- TheFuck ----
 # Function for using 'thefuck' with Fish shell
@@ -201,9 +205,6 @@ end
 zoxide init fish | source
 alias cd="z"
 
+eval "$(fzf --fish --exact)"
 # -------------------- End of Fuzzy Stuff -----------------------------
-
-
-
-
 
