@@ -33,12 +33,16 @@ esac
 # Archive bindings
 cmd unarchive ${{
   case "$f" in
-      *.zip) unzip "$f" ;;
-      *.tar.gz) tar -xzvf "$f" ;;
-      *.tar.bz2) tar -xjvf "$f" ;;
-      *.tar) tar -xvf "$f" ;;
-      *.tar.xz) tar -xJf "$f" ;;
-      *.rar) unrar x "$f" ;;
+      *.zip|*.ZIP) unzip "$f" ;;
+      *.tar.gz|*.tgz|*.TAR.GZ|*.TGZ) tar -xzvf "$f" ;;
+      *.tar.bz2|*.tbz2|*.TAR.BZ2|*.TBZ2) tar -xjvf "$f" ;;
+      *.tar|*.TAR) tar -xvf "$f" ;;
+      *.tar.xz|*.txz|*.TAR.XZ|*.TXZ) tar -xJf "$f" ;;
+      *.rar|*.RAR) unrar x "$f" ;;
+      *.7z|*.7Z) 7z x "$f" ;;
+      *.gz|*.GZ) gunzip "$f" ;;
+      *.bz2|*.BZ2) bunzip2 "$f" ;;
+      *.xz|*.XZ) unxz "$f" ;;
       *) notify-send "Unsupported format"
   esac
 }}
