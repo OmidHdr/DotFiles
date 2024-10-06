@@ -160,6 +160,8 @@ label-mounted-foreground = ${colors.pink}
 ;________________ icons ________________
 [module/i3]
 type = internal/i3
+;enable-click = false
+;enable-scroll = false
 format = <label-state> <label-mode>
 index-sort = true
 wrapping-scroll = false
