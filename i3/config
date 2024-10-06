@@ -42,6 +42,9 @@ bindsym $mod+Ctrl+x exec brightnessctl s 50+
 bindsym $mod+shift+z exec python ~/.config/backlight/mines.py 
 bindsym $mod+shift+x exec python ~/.config/backlight/plus.py 
 
+bindsym $mod+shift+Crtl+z exec python ~/.config/backlight/hdmi_min.py
+bindsym $mod+shift+Crtl+x exec python ~/.config/backlight/hdmi_plus.py
+
 #---Basic Definitions---# #
 set $inner_gaps 40
 set $outer_gaps 40
@@ -97,7 +100,7 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec xfce4-terminal
+bindsym $mod+Return exec konsole
 bindsym $mod+Shift+Return exec warp-terminal
 
 # kill focused window
