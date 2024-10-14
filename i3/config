@@ -1,12 +1,9 @@
-# Version v1
 set $mod Mod4
-# i3 config file (v4)
+# i3 config file
 set $b /usr/share/fonts/font-awesome/svgs/brands/itunes-note.svg
-# good border ===>> ED6B5B  green => 00ff00  blue => 000FF
+# good border ===>> #ED7B5B  green => #00ff00  blue => #000FF
 #set $border #8a307f
 set $border #138086
-
-
 set $base00 #101218
 
 # right color
@@ -34,6 +31,7 @@ bindsym $mod+g exec $HOME/.config/volume/vol+.sh
 bindsym $mod+f exec $HOME/.config/volume/vol-.sh
 
 bindsym $mod+e exec gnome-terminal
+bindsym $mod+Ctrl+e exec kitty -e mc
 
 # set monitor light
 bindsym $mod+Ctrl+z exec brightnessctl s 50-
@@ -69,7 +67,6 @@ for_window [instance="dropdown_dropdowncalc"] resize set 800 300
 for_window [instance="dropdown_tmuxdd"] border pixel 3
 for_window [instance="dropdown_dropdowncalc"] border pixel 2
 for_window [instance="dropdown_*"] move position center
-
 for_window [class="Chromium"] fullscreen toggle
 
 # bindsym $mod+BackSpace
@@ -77,9 +74,6 @@ bindsym $mod+Shift+BackSpace	exec --no-startup-id prompt "Reboot computer?" "$re
 bindsym $mod+Shift+i	gaps inner current set $inner_gaps; gaps outer current set $outer_gaps"
 bindsym $mod+i	gaps inner current set $inner_gaps2; gaps outer current set $outer_gaps2"
 
-
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below.
 #font pango:monospace 8
 font pango:Meslo LGM Nerd Font 14
 
@@ -150,8 +144,7 @@ bindsym $mod+Shift+f floating toggle , resize set 1000 px 600 px, move position 
 # change focus between tiling / floating windows
 bindsym $mod+c focus mode_toggle
 
-# focus the parent container
-
+# work spaces
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -174,31 +167,6 @@ set $ws19 "19"
 set $ws20 "20"
 set $ws21 "21"
 set $ws22 "22"
-
-
-#set $ws1 "1  "
-#set $ws2 "2  "
-#set $ws3 "3  "
-#set $ws4 "4  "
-#set $ws5 "5  "
-#set $ws6 "6  "
-#set $ws7 "7  "
-#set $ws8 "8  "
-#set $ws9 "9  "
-#set $ws10 "10  "
-#set $ws11 "11  "
-#set $ws12 "12  "
-#set $ws13 "13  "
-#set $ws14 "14  "
-#set $ws15 "15  "
-#set $ws16 "16  "
-#set $ws17 "17   "
-#set $ws18 "18"
-#set $ws19 "19"
-#set $ws20 "20"
-#set $ws21 "21"
-#set $ws22 "22"
-
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1     
@@ -281,24 +249,24 @@ hide_edge_borders both
 
 # wallpaper
 exec --no-startup-id nitrogen --restore
-#exec_always feh --bg-scale /home/h0p3/.wallpaper/anime/2.jpg
-#exec_always feh --bg-scale /home/h0p3/.wallpaper/Good/27.jpg
-
 
 bindsym $mod+x exec ~/.config/bash/flameshot.sh
 bindsym $mod+shift+l exec i3lock-fancy
-bindsym $mod+shift+t exec /home/h0p3/Downloads/Telegram
+bindsym $mod+shift+t exec ~/Downloads/Telegram
 
-# tor
+# tor browser
 bindsym $mod+shift+o exec /opt/tor-browser/start-tor-browser.desktop
 
-
+# music on browser
 bindsym $mod+Shift+m exec konsole -e cmus 
 
+# painting on screen
 bindsym $mod+Ctrl+p exec gromit-mpx
+
+# make a window small and moved into top cournet and right on the right monitor
 bindsym $mod+Ctrl+k floating toggle , resize set 500 px 250 px, move position 4600 50
 
-#assign brosers
+#assign browsers
 assign [class="firefox"] $ws1
 assign [class="Chromium"] $ws14
 assign [class="Brave-browser"] $ws1
@@ -335,32 +303,26 @@ assign [class="oracle-ide-osgi-boot-JDeveloper"] $ws5
 assign [class="jetbrains-datagrip"] $ws11
 assign [class="sun-awt-X11-XFramePeer"] $ws5
 
-# end of assign
 
 # --------------------- set monitor always be turn on ---------------
 exec_always --no-startup-id xset -dpms
 exec_always --no-startup-id xset s off  
 
 #exec_always "setxkbmap -layout us,fa"
-# تنظیم زبان به فارسی و انگلیسی
 # exec_always --no-startup-id setxkbmap -layout "us,ir" -option "grp:alt_shift_toggle"
 exec_always --no-startup-id setxkbmap -layout "us,ir" -option  "grp:win_space_toggle"
 
 # polybar
 exec_always --no-startup-id ~/.config/polybar/launch.sh
-#bar {
-#  position top status_command exec /home/h0p3/git/i3status/i3status/mybar.sh
-#   font pango:DejaVu Sans Mono 12
-#}
 #exec_always --no-startup-id ~/.config/polybar/polybar/launch.sh --shapes
 
 # copyq
 exec_always --no-startup-id copyq
-#exec_always --no-startup-id picom --experimental-backend
+
+# animation for windows
 exec_always --no-startup-id compton
 exec --no-startup-id plank
-# xrandr config (for Home)
+
+# xrandr config
 exec_always --no-startup-id xrandr --output eDP-1 --auto --output DP-1 --auto --output HDMI-1 --auto --output DP-1 --left-of eDP-1 --output HDMI-1 --right-of eDP-1
-#config for work
-#exec_always --no-startup-id xrandr --output eDP-1 --auto --output DP-1 --auto --output HDMI-1 --auto --output DP-1 --right-of eDP-1 --output HDMI-1 --left-of eDP-1
 
