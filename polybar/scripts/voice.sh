@@ -9,6 +9,6 @@ then
   then
     notify-send "Battery dieing ... "
     #exec amixer set 'Master' 80%
-    mpv /home/sim0r/gilfoyle.mp3
+    mpv ~/gilfoyle.mp3
   fi
 fi
