@@ -13,29 +13,34 @@
 
 ; ______________ colors ______________
 [colors]
-
-;backBorder = #9fafca
-;backBorder = #79a7d3
+;backBorder = #9572CD
 backBorder = #7e9680
-numl = #4FA3A5
-background = #6b7b8c
-foreground = #2c2a2f
+numl = #6272A4 
+background = #6272A4
+foreground = #44475A
 background-alt = #e52165
-primary = #1b9fc6
+primary = #FF5555
 alert = #bd2c40
+
 purple = #53089b
+purpleNice = #aa90d4
 pink = #AA336A
 darkPink = #e52165
-white = #fae0e5
+white = #F8F8F2
 blue = #076678
+lightBlue = #88e4f8
 yellow = #e2d810
 orange = #af3a03
 green = #0c5c0b
-red = #ff0000
+;red = #ff0000
+lime = #50fa7b
 jighari =  #b20238
 ghahvei = #322514
 darkPurple = #0d1137
-
+darkLime = #ffddd2
+;backBorder = #9fafca
+;backBorder = #79a7d3
+;backBorder = #7e9680
 ;______________ end colors _____________
 
 ; _______________ bar example(defualt) ________________
@@ -75,7 +80,7 @@ font-5 = Font Awesome 5 Brands:pixelsize=12;2
 
 modules-left =  i3
 ;modules-center = xwindow
-modules-right = xkeyboard voice pulseaudio memory wlan xbacklight filesystem cpu temperature backlight date powermenu
+modules-right = xkeyboard voice pulseaudio memory wlan xbacklight filesystem temperature cpu backlight date powermenu
 
 
 ;____________ config polybar _________________
@@ -135,13 +140,13 @@ exec = bash ~/.config/polybar/scripts/voice.sh
 type = internal/xkeyboard
 blacklist-0 = capslock
 format-prefix = " "
-format-underline = ${colors.purple}
-format-prefix-foreground = ${colors.purple}
+format-underline = ${colors.lightBlue}
+format-prefix-foreground = ${colors.lightBlue}
 label-layout = %layout%
-label-layout-foreground = ${colors.purple}
+label-layout-foreground = ${colors.lightBlue}
 label-indicator-padding = 2
 label-indicator-margin = 1
-label-foreground = ${colors.purple}
+label-foreground = ${colors.lightBlue}
 ;_________ end caps lock __________
 
 
@@ -153,9 +158,9 @@ interval = 25
 mount-0 = /
 label-mounted =  %free%
 label-unmounted = %mountpoint% not mounted
-label-unmounted-foreground = ${colors.pink}
-label-mounted-underline = ${colors.pink}
-label-mounted-foreground = ${colors.pink}
+label-unmounted-foreground = ${colors.yellow}
+label-mounted-underline = ${colors.yellow}
+label-mounted-foreground = ${colors.yellow}
 
 ;________________ icons ________________
 [module/i3]
@@ -165,6 +170,7 @@ type = internal/i3
 format = <label-state> <label-mode>
 index-sort = true
 wrapping-scroll = false
+;pin-workspaces = true
 
 ws-icon-0 = 1;
 ws-icon-1 = 2;
@@ -183,25 +189,33 @@ ws-icon-13 = 14;
 ws-icon-14 = 15;
 ws-icon-15 = 16;
 ws-icon-16 = 17;
-;; unlock-icon    docker-icon   debug-icon  android-icon  key-icon 
+; Good Icons maybe useful
+;; unlock-icon   docker-icon   debug-icon  android-icon  key-icon 
 ;; spyder  (ws-icon-15) mask  robot  music  python  
 
 label-mode-padding = 5
 label-mode-foreground = #000
 label-mode-background = ${colors.primary}
 ; focused = Active workspace on focused monitor
+
+;----------- focused ------------
 label-focused =%icon%
-label-focused-foreground = ${colors.red}
+label-focused-foreground = ${colors.lime}
 label-focused-underline= ${colors.primary}
 label-focused-padding = 5
+label-mode = ${colors.green}
 ; unfocused = Inactive workspace on any monitor
 label-unfocused = %icon%
 label-unfocused-padding = 5
 ; visible = Active workspace on unfocused monitor
+
+;----------- visible ------------
 label-visible = %icon%
-label-visible-background = ${self.label-focused-background}
+;label-visible-foreground = ${self.label-focused-underline} 
+label-visible-foreground = ${self.label-mode} 
 label-visible-underline = ${self.label-focused-underline}
 label-visible-padding = ${self.label-focused-padding}
+
 ; urgent = Workspace with urgency hint set
 label-urgent = %icon%
 label-urgent-foreground = ${colors.purple}
@@ -218,10 +232,10 @@ label-urgent-padding = 5
 type = internal/cpu
 interval = 2
 format-prefix = "   "
-format-prefix-foreground = ${colors.green}
-format-underline = ${colors.green}
+format-prefix-foreground = ${colors.pink}
+format-underline = ${colors.pink}
 label = %percentage:2%%
-label-foreground = ${colors.green}
+label-foreground = ${colors.pink}
 
 ;__________ end cpu _________
 
@@ -298,8 +312,8 @@ type = internal/temperature
 thermal-zone = 0
 warn-temperature = 60
 format = <ramp> <label> 
-format-underline = ${colors.blue}
-format-foreground = ${colors.blue}
+format-underline = ${colors.white}
+format-foreground = ${colors.white}
 format-warn = <ramp> <label-warn>
 
 label = %temperature-c% 
