@@ -10,8 +10,7 @@
 ;   The README contains a lot of information
 ;==========================================================
 
-
-; ______________ colors ______________
+; ---------- COLORS ----------
 [colors]
 ;backBorder = #9572CD
 backBorder = #7e9680
@@ -22,28 +21,78 @@ background-alt = #e52165
 primary = #FF5555
 alert = #bd2c40
 
-purple = #53089b
-purpleNice = #aa90d4
-pink = #AA336A
-darkPink = #e52165
-white = #F8F8F2
-blue = #076678
-lightBlue = #88e4f8
-yellow = #e2d810
-orange = #af3a03
-green = #0c5c0b
-;red = #ff0000
-lime = #50fa7b
-jighari =  #b20238
-ghahvei = #322514
-darkPurple = #0d1137
-darkLime = #ffddd2
-;backBorder = #9fafca
-;backBorder = #79a7d3
-;backBorder = #7e9680
-;______________ end colors _____________
+; --- SALMON ---
+SALMON = #FF7E70
+DARK_SALMON = #E9967A
+LIGHT_SALMON = #FFA07A
+LEMON_CHIFFON = #FFFACD
 
-; _______________ bar example(defualt) ________________
+; --- PINK ---
+HOT_PINK = #FF69B4
+DARK_PINK = #C11C84
+DEEP_PINK = #FF1493
+ROSE = #FF1D8D
+
+; --- CORAL / ORANGE ---
+CORAL = #FF5555
+LIGHT_CORAL = #F08088
+CORAL_ORANGE = #af3a03
+ORANGE_RED = #FF4500
+DARK_ORANGE = #C76E00
+
+; --- LIGHT COLOR ---
+WHITE = #F8F8F2
+MOCCASIN = #FFE4B5
+PEACH_PUFF = #FFDAB9
+PEACH_PUFF_LIGHT = #ffddd2
+PALE_GOLDENROD = #EEE8AA
+DARK_KHAKI = #BDB76B
+
+
+; -- GREEN / YELLOW ---
+GOLD = #EFBF04
+YELLOW = #e2d810
+YELLOW_GREEN = #CCFF00
+
+LIME = #00FF00
+LAWN_GREEN = #7CFC00
+LIGHT_GREEN = #88E788
+MIDIUM_SPRING_GREEN = #00FA9A
+GRASSY = #7CB68E
+FOREST_GREEN = #228B22
+;lime = #50fa7b
+GREEN = #0c5c0b
+;backBorder = #7e9680
+
+; --- BLUE / CYAN ---
+CYAN = #00FFFF
+DARK_CYAN = #008B8B
+DARK_BLUE = #076678
+LIGHT_BLUE = #88e4f8
+DEEP_BLUE = #79a7d3
+;backBorder = #9fafca
+
+; --- RED ---
+LIGHT_RED = #ff0000
+CRIMSON = #DC143C
+FIRE_BRICK = #B22222
+;pink = #AA336A
+;darkPink = #e52165
+;darkPink2 = #741b47
+
+; --- PURPLE ---
+PURPLE = #53089b
+LIGHT_PURPLE = #aa90d4
+
+; -- BROWN ---
+BROWN = #322514
+line-color = #00564d
+
+
+
+
+
+; ---------- BAR ----------
 [bar/example]
 width = 100%
 height = 35
@@ -56,8 +105,6 @@ enable-ipc = true
 background = ${colors.backBorder}
 foreground = ${colors.foreground}
 line-size = 3
-
-line-color = #00564d
 
 border-size = 1
 border-color = #0D00564d
@@ -78,12 +125,17 @@ font-5 = Font Awesome 5 Brands:pixelsize=12;2
 
 
 
+
+
 modules-left =  i3
 ;modules-center = xwindow
 modules-right = xkeyboard voice pulseaudio memory wlan xbacklight filesystem temperature cpu backlight date powermenu
 
 
-;____________ config polybar _________________
+
+
+
+; ---------- CONFIG POLYBAR ----------
 ; powermenu
 ;separator = |
 tray-position = right
@@ -92,19 +144,9 @@ cursor-click = pointer
 eursor-scroll = ns-resize
 
 
-;__________ pacman _____________
-[module/pacman]
-type = custom/script
-exec = checkupdates | wc -l
-interval = 2000
-label = Repo : %output%
-format-foreground = ${colors.blue}
-format-background = ${colors.pink}
-format-prefix = "󰧩"
-format-prefix-foreground = #FFBB00
-;click-left = /usr/local/bin/update.sh execute
 
-;_____________ xwindow ____________
+
+; ---------- XWINDOW ----------
 [module/xwindow]
 ;https://github.com/jaagr/polybar/wiki/Module:-xwindow
 type = internal/xwindow
@@ -118,51 +160,40 @@ label-maxlen = 50
 format-foreground = ${colors.foreground}
 format-background = ${colors.backBorder}
 
-; ____________ start func ___________
-[module/bat]
-type = custom/script
-exec = bash ~/.config/polybar/scripts/battery.sh
-
-[module/charg]
-type=custom/script
-exec = bash ~/.config/polybar/scripts/persentage.sh
-
-[module/voice]
-type=custom/script
-exec = bash ~/.config/polybar/scripts/voice.sh
-
-; _____________ end func _________________
 
 
 
-;__________ capslock ___________
+; ---------- KEYBOARD ----------
 [module/xkeyboard]
 type = internal/xkeyboard
 blacklist-0 = capslock
 format-prefix = " "
-format-underline = ${colors.lightBlue}
-format-prefix-foreground = ${colors.lightBlue}
+format-underline = ${colors.CYAN}
+format-prefix-foreground = ${colors.CYAN}
 label-layout = %layout%
-label-layout-foreground = ${colors.lightBlue}
+label-layout-foreground = ${colors.CYAN}
 label-indicator-padding = 2
 label-indicator-margin = 1
-label-foreground = ${colors.lightBlue}
-;_________ end caps lock __________
+label-foreground = ${colors.CYAN}
 
 
 
-;____________ file System _______________
+
+; ---------- FILE SYSTEM ----------
 [module/filesystem]
 type = internal/fs
 interval = 25
 mount-0 = /
 label-mounted =  %free%
 label-unmounted = %mountpoint% not mounted
-label-unmounted-foreground = ${colors.yellow}
-label-mounted-underline = ${colors.yellow}
-label-mounted-foreground = ${colors.yellow}
+label-unmounted-foreground = ${colors.GOLD}
+label-mounted-underline = ${colors.GOLD}
+label-mounted-foreground = ${colors.GOLD}
 
-;________________ icons ________________
+
+
+
+; ---------- ICONS ----------
 [module/i3]
 type = internal/i3
 ;enable-click = false
@@ -198,18 +229,18 @@ label-mode-foreground = #000
 label-mode-background = ${colors.primary}
 ; focused = Active workspace on focused monitor
 
-;----------- focused ------------
+;--- focused ---
 label-focused =%icon%
-label-focused-foreground = ${colors.lime}
+label-focused-foreground = ${colors.LIME}
 label-focused-underline= ${colors.primary}
 label-focused-padding = 5
-label-mode = ${colors.green}
+label-mode = ${colors.MOCCASIN}
 ; unfocused = Inactive workspace on any monitor
 label-unfocused = %icon%
 label-unfocused-padding = 5
 ; visible = Active workspace on unfocused monitor
 
-;----------- visible ------------
+;--- visible ---
 label-visible = %icon%
 ;label-visible-foreground = ${self.label-focused-underline} 
 label-visible-foreground = ${self.label-mode} 
@@ -223,45 +254,50 @@ label-urgent-underline = ${colors.red}
 label-urgent-padding = 5
 ; Separator in between workspaces
 ; label-separator = |
-
 ;________________ end icons ________________
 
 
-;_________ cpu
+
+
+
+; ---------- CPU ----------
 [module/cpu]
 type = internal/cpu
 interval = 2
 format-prefix = "   "
-format-prefix-foreground = ${colors.pink}
-format-underline = ${colors.pink}
+format-prefix-foreground = ${colors.FIRE_BRICK}
+format-underline = ${colors.FIRE_BRICK}
 label = %percentage:2%%
-label-foreground = ${colors.pink}
-
-;__________ end cpu _________
+label-foreground = ${colors.FIRE_BRICK}
 
 
-;__________ memory _______
+
+
+; ---------- MEMORY ----------
 [module/memory]
 type = internal/memory
 interval = 2
 format-prefix = " "
-format-prefix-foreground = ${colors.ghahvei}
-format-underline = ${colors.ghahvei}
+format-prefix-foreground = ${colors.BROWN}
+format-underline = ${colors.BROWN}
 label = %percentage_used%%
-label-foreground = ${colors.ghahvei}
-;________ end memory ________
+label-foreground = ${colors.BROWN}
 
-;____________ swap ___________
+
+
+
+; ---------- SWAP ----------
 [module/swap]
 type = internal/swap
 interval = 2
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #4bffdc
 label = %percentage:2%% |
 
 
-;_________________ date _____________
+
+
+; ---------- DATE ----------
 [module/date]
 type = internal/date
 interval = 1
@@ -270,30 +306,23 @@ date-alt = " %Y-%m-%d"
 time = %H:%M
 time-alt = %H:%M:%S
 format-prefix = 
-format-prefix-foreground = ${colors.darkPurple}
-format-underline = ${colors.darkPurple}
-label = %date% %time%
-label-foreground = ${colors.darkPurple}
-;_____________ end date _____________
+format-prefix-foreground = ${colors.BROWN}
+format-underline = ${colors.BROWN}
+label = %date%    %time%
+label-foreground = ${colors.BROWN}
 
 
-;_____________ pulse audio __________
+
+
+; ---------- AUDIO ----------
 [module/pulseaudio]
 type = internal/pulseaudio
 format-volume = <label-volume> <bar-volume>
-format-volume-underline = ${colors.orange}
+format-volume-underline = ${colors.LEMON_CHIFFON}
 label-volume =%percentage%% 
-label-volume-foreground = ${colors.orange}
+label-volume-foreground = ${colors.LEMON_CHIFFON}
 label-muted = |  |
-label-muted-foreground = #666
 bar-volume-width = 10
-bar-volume-foreground-0 = #55aa55
-bar-volume-foreground-1 = #55aa55
-bar-volume-foreground-2 = #55aa55
-bar-volume-foreground-3 = #55aa55
-bar-volume-foreground-4 = #55aa55
-bar-volume-foreground-5 = #f5a70a
-bar-volume-foreground-6 = #ff5555
 bar-volume-gradient = false
 ;bar-volume-indicator = |
 bar-volume-indicator = 
@@ -303,17 +332,18 @@ bar-volume-fill-font = 2
 bar-volume-empty = ─
 bar-volume-empty-font = 2
 bar-volume-empty-foreground = ${colors.foreground-alt}
-;________________end audio _______________
 
 
-; ___________ start temperature _____________
+
+
+; ---------- TEMPERATURE ----------
 [module/temperature]
 type = internal/temperature
 thermal-zone = 0
 warn-temperature = 60
 format = <ramp> <label> 
-format-underline = ${colors.white}
-format-foreground = ${colors.white}
+format-underline = ${colors.PURPLE}
+format-foreground = ${colors.PURPLE}
 format-warn = <ramp> <label-warn>
 
 label = %temperature-c% 
@@ -321,17 +351,19 @@ label-warn = %temperature-c% 
 ramp-0 = 
 ramp-1 = 
 ramp-2 = 
-; ______________ end temprature ______________
 
-;______ powermenu ________
+
+
+
+; ---------- POWER MENU ----------
 [module/powermenu]
 type = custom/menu
 expand-right = true
 format-spacing = 1
 label-open =    
-label-open-foreground = ${colors.jighari}
+label-open-foreground = ${colors.DARK_KHAKI}
 label-close =  cancel
-label-close-foreground = ${colors.jighari}
+label-close-foreground = ${colors.DARK_KHAKI}
 label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
 format-underline = ${colors.jighari}
@@ -342,9 +374,44 @@ menu-0-2 = power off
 menu-0-2-exec = systemctl poweroff
 menu-0-0 = suspend
 menu-0-0-exec = systemctl suspend
-;___________________
 
-;__________ settings __________
+
+
+
+; ---------- PACMAN ----------
+[module/pacman]
+type = custom/script
+exec = checkupdates | wc -l
+interval = 2000
+label = Repo : %output%
+format-foreground = ${colors.blue}
+format-background = ${colors.pink}
+format-prefix = "󰧩"
+format-prefix-foreground = #FFBB00
+;click-left = /usr/local/bin/update.sh execute
+
+
+
+
+
+; ---------- BATTERY ----------
+[module/bat]
+type = custom/script
+exec = bash ~/.config/polybar/scripts/battery.sh
+
+[module/charg]
+type=custom/script
+exec = bash ~/.config/polybar/scripts/persentage.sh
+
+[module/voice]
+type=custom/script
+exec = bash ~/.config/polybar/scripts/voice.sh
+
+
+
+
+
+; ---------- SETTINGS ----------
 [settings]
 screenchange-reload = true
 ;compositing-background = xor
@@ -353,9 +420,14 @@ screenchange-reload = true
 ;compositing-border = over
 pseudo-transparency = true
 
+
+
+
 [global/wm]
 margin-top = 5
 margin-bottom = 5
+
+
 
 [bar/example]
 monitor = ${env:MONITOR:}
