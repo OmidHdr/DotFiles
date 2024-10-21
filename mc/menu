@@ -105,6 +105,15 @@ shell_patterns=0
 9	    Mount phone on home
 	    python ~/.config/python/phoneMount.py
 
+x       Rename At the end
+        CMD=%{Enter word you to add at the end of your file :}
+        bash ~/.config/bash/renameEnd.sh %f $CMD
+
+z       Rename At the beginning
+        CMD=%{Enter word you to add at the beginning of your file :}
+        bash ~/.config/bash/renameBegin.sh %f $CMD
+
+
 = f \.c$ & t r
 + f \.c$ & t r & ! t t
 c       Compile and link current .c file
