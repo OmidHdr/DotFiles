@@ -12,7 +12,7 @@ set -x BROWSER /usr/bin/brave
 set -x PATH $PATH /home/h0p3/.local/bin /opt/clion-2022.3.1/bin /opt/oracle/product/18c/dbhomeXE/bin
 #set -x JAVA_HOME /usr/lib/jvm/default
 set -U fish_user_paths ~/.local/share/jdtls/bin $fish_user_paths
-set -x JAVA_HOME /usr/lib/jvm/java-17-openjdk
+set -x JAVA_HOME /usr/lib/jvm/java-24-openjdk
 set -x PATH $JAVA_HOME/bin $PATH
 
 
@@ -67,6 +67,8 @@ alias la 'ls -a'
 alias lla 'ls -la'
 alias lt 'ls --tree'
 alias vim 'lvim'
+alias htop 'btop'
+alias speedtest 'speedtest-cli'
 
 
 # --------------------- Fuzzy Stuff ---------------------
@@ -207,4 +209,4 @@ alias cd="z"
 
 eval "$(fzf --fish --exact)"
 # -------------------- End of Fuzzy Stuff -----------------------------
-
+fish_vi_key_bindings

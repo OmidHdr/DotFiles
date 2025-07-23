@@ -42,7 +42,7 @@ DARK_ORANGE = #C76E00
 
 ; --- LIGHT COLOR ---
 WHITE = #F8F8F2
-MOCCASIN = #FFE4B5
+MOCCASIN = RESIZE
 PEACH_PUFF = #FFDAB9
 PEACH_PUFF_LIGHT = #ffddd2
 PALE_GOLDENROD = #EEE8AA
@@ -102,7 +102,7 @@ radius = 9.0
 fixed-center = true
 enable-ipc = true
 
-background = ${colors.backBorder}
+background = ${colors.DEEP_BLUE}
 foreground = ${colors.foreground}
 line-size = 3
 
@@ -128,8 +128,8 @@ font-5 = Font Awesome 5 Brands:pixelsize=12;2
 
 
 modules-left =  i3
-;modules-center = xwindow
-modules-right = xkeyboard voice pulseaudio memory wlan xbacklight filesystem temperature cpu backlight date powermenu
+modules-center = xwindow
+modules-right = xkeyboard voice battery pulseaudio memory wlan xbacklight filesystem temperature cpu backlight date powermenu
 
 
 
@@ -158,7 +158,7 @@ label = %title%
 label-maxlen = 50
 
 format-foreground = ${colors.foreground}
-format-background = ${colors.backBorder}
+format-background = ${colors.DEEP_BLUE}
 
 
 
@@ -254,7 +254,6 @@ label-urgent-underline = ${colors.PURPLE}
 label-urgent-padding = 5
 ; Separator in between workspaces
 ; label-separator = |
-format-urgent-foreground = #ff00ff
 ;________________ end icons ________________
 
 
@@ -394,20 +393,22 @@ format-prefix-foreground = #FFBB00
 
 
 
-
-; ---------- BATTERY ----------
-[module/bat]
-type = custom/script
-exec = bash ~/.config/polybar/scripts/battery.sh
-
-[module/charg]
-type=custom/script
-exec = bash ~/.config/polybar/scripts/persentage.sh
-
-[module/voice]
-type=custom/script
-exec = bash ~/.config/polybar/scripts/voice.sh
-
+; ------- Battery ------
+[module/battery]
+type = internal/battery
+; You can customize the format here
+format-charging = <label-charging> <ramp-capacity>
+format-discharging = <label-discharging> <ramp-capacity>
+format-full = <label-full> <ramp-capacity>
+format-unknown = <label-unknown> <ramp-capacity>
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+; You can change the icon above to any other icon
+ramp-capacity-foreground = #ffffff
+; Colors change from color line to your
 
 
 
