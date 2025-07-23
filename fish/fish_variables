@@ -6,7 +6,7 @@ SETUVAR AGNOSTER_ICON_GIT_BRANCH:\u2387
 SETUVAR AGNOSTER_ICON_GIT_REF:\u27a6
 SETUVAR AGNOSTER_ICON_ROOT:\u26a1
 SETUVAR AGNOSTER_SEGMENT_SEPARATOR:\x1e\u2502
-SETUVAR __fish_initialized:3400
+SETUVAR __fish_initialized:3800
 SETUVAR _fisher_hauleth_2F_agnoster_files:\x7e/\x2econfig/fish/functions/agnoster\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_mode_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_prompt\x2efish
 SETUVAR _fisher_plugins:hauleth/agnoster
 SETUVAR _fisher_upgraded_to_4_4:\x1d
@@ -27,12 +27,12 @@ SETUVAR fish_color_operator:brcyan
 SETUVAR fish_color_param:cyan
 SETUVAR fish_color_quote:yellow
 SETUVAR fish_color_redirection:cyan\x1e\x2d\x2dbold
-SETUVAR fish_color_search_match:bryellow\x1e\x2d\x2dbackground\x3dbrblack
+SETUVAR fish_color_search_match:white\x1e\x2d\x2dbackground\x3dbrblack
 SETUVAR fish_color_selection:white\x1e\x2d\x2dbold\x1e\x2d\x2dbackground\x3dbrblack
 SETUVAR fish_color_status:red
 SETUVAR fish_color_user:brgreen
 SETUVAR fish_color_valid_path:\x2d\x2dunderline
-SETUVAR fish_key_bindings:fish_default_key_bindings
+SETUVAR fish_key_bindings:fish_vi_key_bindings
 SETUVAR fish_pager_color_completion:normal
 SETUVAR fish_pager_color_description:yellow\x1e\x2di
 SETUVAR fish_pager_color_prefix:normal\x1e\x2d\x2dbold\x1e\x2d\x2dunderline

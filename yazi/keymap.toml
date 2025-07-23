@@ -1,0 +1,71 @@
+[[manager.prepend_keymap]]
+on   = [ "g", "d" ]
+run  = "cd ~/Documents"
+desc = "Cd to ~/Documents"
+
+[[manager.prepend_keymap]]
+on   = [ "g", "D" ]
+run  = "cd ~/Downloads"
+desc = "Cd to ~/Downloads"
+
+[[manager.prepend_keymap]]
+on   = [ "g", "p" ]
+run  = "cd ~/Pictures"
+desc = "Cd to ~/Pictures"
+
+[[manager.prepend_keymap]]
+on   = [ "g", "m" ]
+run  = "cd /run/media/backup/Movie"
+desc = "Cd to /run/media/backup/Movie"
+
+[[manager.prepend_keymap]]
+on   = [ "g", "l" ]
+run  = "cd /run/media/backup/learn"
+desc = "Cd to /run/media/backup/learn"
+
+[[manager.prepend_keymap]]
+on   = [ "g", "b" ]
+run  = "cd /run/media/backup"
+desc = "Cd to /run/media/backup"
+
+[[manager.prepend_keymap]]
+on   = [ "g", "c" ]
+run  = "cd ~/.config"
+desc = "Cd to ~/.config"
+
+[[manager.prepend_keymap]]
+on   = [ "g", "m" ]
+run  = "cd ~/Music"
+desc = "Cd to ~/Music"
+
+[[manager.prepend_keymap]]
+on   = [ "g", "t" ]
+run  = "cd ~/.local/share/Trash/files"
+desc = "Cd to Trash"
+
+[[manager.prepend_keymap]]
+on   = [ "g", "o" ]
+run  = "cd /opt"
+desc = "Cd to /opt"
+
+[[manager.prepend_keymap]]
+on   = [ "m", "P" ]
+run  = [ '''
+          shell 'phoneMount' --confirm
+       ''' ]
+desc = "mount phone"
+
+[[manager.prepend_keymap]]
+on   = [ "m", "S" ]
+run  = [ '''
+          shell 'sh -c '\''echo "{ \"command\": [\"sub-add\", \"$1\"] }" | socat - /tmp/mpvsocket'\'' _ "$1"'
+       ''' ]
+desc = "Add Subtitle"
+
+[[manager.prepend_keymap]]
+on   = [ "m", "z" ]
+run  = [ '''
+          shell 'zip -r "$0".zip "$0";' --confirm
+       ''' ]
+desc = "Zip a File Or Folder"
+
