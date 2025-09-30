@@ -357,4 +357,23 @@ exec --no-startup-id plank
 
 # xrandr config
 exec_always --no-startup-id xrandr --output eDP-1 --auto --output DP-1 --auto --output HDMI-1 --auto --output DP-1 --left-of eDP-1 --output HDMI-1 --right-of eDP-1
+for_window [class="Conky"] floating enable
+for_window [class="Conky"] border pixel 0
+for_window [class="Conky"] sticky enable
+for_window [class="Conky"] focus_on_window_activation smart
+for_window [class="Conky"] no_focus
+
+
+for_window [class="conky"] floating enable
+for_window [class="conky"] border pixel 0
+for_window [class="conky"] sticky enable
+for_window [class="conky"] focus_on_window_activation smart
+for_window [class="conky"] no_focus
+
+# اجرای اسکریپت تنظیم مانیتور بعد از ریستارت i3
+exec --no-startup-id ~/.config/i3/monitor-setup.sh
+exec --no-startup-id conky -c /home/heidari/.conky/Gotham/Gotham
+exec --no-startup-id conky -c /home/heidari/.conky/TeejeeTech/Network\ Panel
+exec --no-startup-id conky -c /home/heidari/.conky/TeejeeTech/Process\ Panel
+exec --no-startup-id conky -c /home/heidari/.conky/victorConky1.1/victorConky/ArchLarge
 

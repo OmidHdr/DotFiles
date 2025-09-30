@@ -39,6 +39,7 @@ LIGHT_CORAL = #F08088
 CORAL_ORANGE = #af3a03
 ORANGE_RED = #FF4500
 DARK_ORANGE = #C76E00
+LIGHT_ORANGE = #e2d183
 
 ; --- LIGHT COLOR ---
 WHITE = #F8F8F2
@@ -53,6 +54,7 @@ DARK_KHAKI = #BDB76B
 GOLD = #EFBF04
 YELLOW = #e2d810
 YELLOW_GREEN = #CCFF00
+LIGHT_YELLOW = #fff49b
 
 LIME = #00FF00
 LAWN_GREEN = #7CFC00
@@ -74,6 +76,7 @@ DEEP_BLUE = #79a7d3
 
 ; --- RED ---
 LIGHT_RED = #ff0000
+LIGHTER_RED = #dc493a
 CRIMSON = #DC143C
 FIRE_BRICK = #B22222
 ;pink = #AA336A
@@ -158,7 +161,7 @@ label = %title%
 label-maxlen = 50
 
 format-foreground = ${colors.foreground}
-format-background = ${colors.backBorder}
+format-background = ${colors.DEEP_BLUE}
 
 
 
@@ -231,7 +234,7 @@ label-mode-background = ${colors.primary}
 
 ;--- focused ---
 label-focused =%icon%
-label-focused-foreground = ${colors.LIME}
+label-focused-foreground = ${colors.LIGHT_RED}
 label-focused-underline= ${colors.primary}
 label-focused-padding = 5
 label-mode = ${colors.MOCCASIN}
