@@ -1,66 +1,41 @@
--- Disable "No information available" notification on hover
--- plus define border for hover window
-vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
-  config = config
-    or {
-      border = {
-        { "╭", "Comment" },
-        { "─", "Comment" },
-        { "╮", "Comment" },
-        { "│", "Comment" },
-        { "╯", "Comment" },
-        { "─", "Comment" },
-        { "╰", "Comment" },
-        { "│", "Comment" },
-      },
-    }
-  config.focus_id = ctx.method
-  if not (result and result.contents) then
-    return
-  end
-  local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
-  markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
-  if vim.tbl_isempty(markdown_lines) then
-    return
-  end
-  return vim.lsp.util.open_floating_preview(markdown_lines, "markdown", config)
-end
-
 return {
+  { "williamboman/mason.nvim", cmd = "Mason", build = ":MasonUpdate", opts = { ui = { border = "rounded" } } },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
+    opts = { ensure_installed = { "lua_ls", "jsonls", "yamlls", "lemminx", "bashls", "dockerls", "docker_compose_language_service" }, automatic_enable = false },
+  },
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = "williamboman/mason.nvim",
+    opts = { ensure_installed = { "jdtls", "java-debug-adapter", "java-test", "stylua", "prettierd", "shfmt", "shellcheck", "checkstyle", "sql-formatter" }, run_on_start = true },
+  },
   {
     "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        vtsls = {
-          settings = {
-            typescript = {
-              inlayHints = {
-                enumMemberValues = { enabled = false },
-                functionLikeReturnTypes = { enabled = false },
-                parameterNames = { enabled = false },
-                parameterTypes = { enabled = false },
-                propertyDeclarationTypes = { enabled = false },
-                variableTypes = { enabled = false },
-              },
-            },
-          },
-        },
-        gopls = {
-          settings = {
-            gopls = {
-              hints = {
-                assignVariableTypes = false,
-                compositeLiteralFields = false,
-                compositeLiteralTypes = false,
-                constantValues = false,
-                functionTypeParameters = false,
-                parameterNames = false,
-                rangeVariableTypes = false,
-              },
-            },
-          },
-        },
-      },
-    },
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "hrsh7th/cmp-nvim-lsp", "williamboman/mason-lspconfig.nvim" },
+    config = function()
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local on_attach = function(_, bufnr)
+        local function m(lhs, rhs, desc) vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc }) end
+        m("gd", vim.lsp.buf.definition, "Go to definition"); m("gD", vim.lsp.buf.declaration, "Go to declaration")
+        m("gr", "<cmd>Telescope lsp_references<cr>", "Find references"); m("gi", "<cmd>Telescope lsp_implementations<cr>", "Go to implementation")
+        m("K", vim.lsp.buf.hover, "Hover documentation"); m("<C-k>", vim.lsp.buf.signature_help, "Signature help")
+        m("<leader>la", vim.lsp.buf.code_action, "Code action"); m("<leader>lr", vim.lsp.buf.rename, "Rename symbol")
+        m("<leader>ls", "<cmd>Telescope lsp_document_symbols<cr>", "Document symbols")
+      end
+      vim.diagnostic.config({ severity_sort = true, update_in_insert = false, underline = true, virtual_text = { spacing = 3, source = "if_many", prefix = "●" }, float = { border = "rounded", source = true } })
+      for kind, icon in pairs({ Error = " ", Warn = " ", Hint = "󰌵 ", Info = " " }) do vim.fn.sign_define("DiagnosticSign" .. kind, { text = icon, texthl = "DiagnosticSign" .. kind }) end
+      local servers = {
+        lua_ls = { settings = { Lua = { diagnostics = { globals = { "vim" } }, workspace = { checkThirdParty = false }, telemetry = { enable = false } } } },
+        jsonls = {}, yamlls = { settings = { yaml = { keyOrdering = false } } }, lemminx = {},
+        bashls = {}, dockerls = {}, docker_compose_language_service = {},
+      }
+      for name, config in pairs(servers) do
+        config.capabilities, config.on_attach = capabilities, on_attach
+        vim.lsp.config(name, config)
+        vim.lsp.enable(name)
+      end
+    end,
   },
 }

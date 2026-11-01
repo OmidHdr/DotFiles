@@ -1,12 +1,29 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
-
 local opt = vim.opt
-
-opt.conceallevel = 0
-opt.cmdheight = 0
-
-vim.g.root_spec = { "cwd" }
-vim.g.omni_sql_no_default_maps = 1
-vim.g.python3_host_prog = "/usr/bin/python3"
+opt.number = true
+opt.relativenumber = true
+opt.mouse = "a"
+opt.clipboard = "unnamedplus"
+opt.breakindent = true
+opt.undofile = true
+opt.ignorecase = true
+opt.smartcase = true
+opt.signcolumn = "yes"
+opt.updatetime = 250
+opt.timeoutlen = 400
+opt.splitright = true
+opt.splitbelow = true
+opt.termguicolors = true
+opt.cursorline = true
+opt.scrolloff = 6
+opt.sidescrolloff = 8
+opt.completeopt = "menu,menuone,noselect"
+opt.confirm = true
+opt.wrap = false
+opt.laststatus = 3
+opt.pumheight = 12
+opt.showmode = false
+opt.list = true
+opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+opt.sessionoptions = "buffers,curdir,tabpages,winsize,help,globals,skiprtp"
+vim.g.have_nerd_font = true
+vim.g.transparent_background = false
