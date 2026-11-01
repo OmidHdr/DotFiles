@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+# ==============================================================================
+# i3lock-fancy with Clean Circle & Lock Icon in Center
+# ==============================================================================
+
+# ۱. ذخیره وضعیت فعلی کیبورد قبل از قفل شدن
+PREV_LAYOUT=$(setxkbmap -query | awk '/layout/{print $2}')
+PREV_VARIANT=$(setxkbmap -query | awk '/variant/{print $2}')
+PREV_OPTION=$(setxkbmap -query | awk '/option/{print $2}')
+
+# ۲. موقتاً کیبورد روی حالت انگلیسی قرار می‌گیرد تا پسورد اشتباه وارد نشود
+setxkbmap us
+
+IMAGE="/tmp/i3lock-fancy.png"
+
+# ۳. گرفتن عکس از صفحه با کیفیت بالا
+if command -v maim &> /dev/null; then
+    maim "$IMAGE"
+elif command -v scrot &> /dev/null; then
+    scrot "$IMAGE"
+else
+    exit 1
+fi
+
+# ۴. بلر کامل، عمیق و مات کردن تصویر
+convert "$IMAGE" -blur 0x16 -fill black -colorize 25% "$IMAGE"
+
+# ۵. قفل کردن صفحه با i3lock-color و نمایش آیکون قفل و وضعیت زبان وسط دایره
+i3lock-color \
+    --image="$IMAGE" \
+    --indicator \
+    --radius=100 \
+    --ring-color=ffffffff \
+    --inside-color=000000bb \
+    --keyhl-color=ff0077ff \
+    --bshl-color=ff5555ff \
+    --separator-color=222222ff \
+    \
+    # نمایش وضعیت زبان (Layout) وسط دایره
+    --layout-str="🔒 English" \
+    --layout-size=18 \
+    --layout-color=ffffffff \
+    --layout-align=1
+
+# ۶. بازگردانی خودکار تنظیمات کیبورد به حالت قبل (فارسی و انگلیسی)
+if [[ -n "$PREV_LAYOUT" ]]; then
+    if [[ -n "$PREV_VARIANT" ]]; then
+        setxkbmap -layout "$PREV_LAYOUT" -variant "$PREV_VARIANT"
+    else
+        setxkbmap -layout "$PREV_LAYOUT"
+    fi
+else
+    setxkbmap -layout us,ir -option grp:win_space_toggle
+fi
+
+if [[ -n "$PREV_OPTION" ]]; then
+    setxkbmap -option "$PREV_OPTION"
+fi
+
+# ۷. پاکسازی فایل‌های موقت
+rm -f "$IMAGE"

@@ -80,15 +80,6 @@ bindsym $mod+i	gaps inner current set $inner_gaps2; gaps outer current set $oute
 #font pango:monospace 8
 font pango:Meslo LGM Nerd Font 14
 
-# screen before suspend. Use loginctl lock-session to lock your screen.
-#exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-#exec_always --no-startup-id xset s noblank
-#exec_always --no-startup-id xset s 600
-#exec_always --no-startup-id xset +dpms
-#exec_always --no-startup-id xset dpms 0 0 0
-#exec_always --no-startup-id xautolock -time 10 -locker "i3lock -i ~/.wallpaper/wallpaper.jpg"
-
-
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
@@ -103,8 +94,8 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec konsole -e tmux
-bindsym $mod+Shift+Return exec warp-terminal
+bindsym $mod+Return exec konsole
+bindsym $mod+Shift+Return exec konsole -e tmux
 
 # kill focused window
 #bindsym $mod+Shift+q kill
@@ -266,7 +257,6 @@ hide_edge_borders both
 exec --no-startup-id nitrogen --restore
 
 bindsym $mod+x exec ~/.config/bash/flameshot.sh
-bindsym $mod+shift+l exec i3lock-fancy
 bindsym $mod+shift+t exec ~/Downloads/Telegram
 
 # tor browser
@@ -274,6 +264,7 @@ bindsym $mod+shift+o exec /opt/tor-browser/start-tor-browser.desktop
 
 # music on browser
 bindsym $mod+Shift+m exec konsole -e cmus 
+bindsym $mod+shift+l exec ~/.config/i3/i3lock-fancy
 
 # painting on screen
 bindsym $mod+Ctrl+p exec gromit-mpx
@@ -333,6 +324,8 @@ assign [class="sun-awt-X11-XFramePeer"] $ws5
 # ---- vpn ----
 assign [class="carburetor"] $ws17
 assign [class="nekoray"] $ws17
+assign [class="Windscribe"] $ws17
+
 
 # --------------------- set monitor always be turn on ---------------
 exec_always --no-startup-id xset -dpms
@@ -350,6 +343,7 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # copyq
 exec_always --no-startup-id copyq
+bindsym $mod+Shift+v exec --no-startup-id copyq toggle
 
 # animation for windows
 exec_always --no-startup-id compton
@@ -357,23 +351,15 @@ exec --no-startup-id plank
 
 # xrandr config
 exec_always --no-startup-id xrandr --output eDP-1 --auto --output DP-1 --auto --output HDMI-1 --auto --output DP-1 --left-of eDP-1 --output HDMI-1 --right-of eDP-1
-for_window [class="Conky"] floating enable
-for_window [class="Conky"] border pixel 0
-for_window [class="Conky"] sticky enable
-for_window [class="Conky"] focus_on_window_activation smart
-for_window [class="Conky"] no_focus
+for_window [class="copyq"] floating enable
 
+# Set monitors
+workspace $ws1 output VGA-1
+workspace $ws7 output VGA-1
+workspace $ws9 output VGA-1
+workspace $ws11 output VGA-1
 
-for_window [class="conky"] floating enable
-for_window [class="conky"] border pixel 0
-for_window [class="conky"] sticky enable
-for_window [class="conky"] focus_on_window_activation smart
-for_window [class="conky"] no_focus
+workspace $ws5 output HDMI-1
+workspace $ws12 output HDMI-1
 
-# اجرای اسکریپت تنظیم مانیتور بعد از ریستارت i3
-exec --no-startup-id ~/.config/i3/monitor-setup.sh
-exec --no-startup-id conky -c /home/heidari/.conky/Gotham/Gotham
-exec --no-startup-id conky -c /home/heidari/.conky/TeejeeTech/Network\ Panel
-exec --no-startup-id conky -c /home/heidari/.conky/TeejeeTech/Process\ Panel
-exec --no-startup-id conky -c /home/heidari/.conky/victorConky1.1/victorConky/ArchLarge
 
