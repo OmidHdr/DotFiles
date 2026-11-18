@@ -131,9 +131,8 @@ font-5 = Font Awesome 7 Brands:pixelsize=12;2
 
 
 modules-left =  i3
-modules-center = xwindow
-modules-right = xkeyboard voice battery pulseaudio memory wlan xbacklight filesystem temperature cpu backlight date powermenu
-
+modules-center =xwindow windscribe
+modules-right = xkeyboard voice battery pulseaudio memory wifi-switcher pacman xbacklight filesystem temperature cpu backlight date powermenu
 
 
 
@@ -149,20 +148,27 @@ eursor-scroll = ns-resize
 
 
 
-; ---------- XWINDOW ----------
 [module/xwindow]
-;https://github.com/jaagr/polybar/wiki/Module:-xwindow
 type = internal/xwindow
 
-; Available tokens:
-;   %title%
-; Default: %title%
-label = %title%
-label-maxlen = 50
+label = %class% -
+label-maxlen = 20
+label-empty =
 
 format-foreground = ${colors.foreground}
 format-background = ${colors.DEEP_BLUE}
 
+
+
+; ---------- WINDSCRIBE ----------
+[module/windscribe]
+type = custom/script
+exec = /usr/bin/bash /home/h0p3/.config/polybar/scripts/windscribe-status.sh
+interval = 5
+format = <label>
+format-background = ${colors.DARK_CYAN}
+label = %output%
+label-padding = 1
 
 
 
@@ -384,15 +390,16 @@ menu-0-0-exec = systemctl suspend
 ; ---------- PACMAN ----------
 [module/pacman]
 type = custom/script
-exec = checkupdates | wc -l
-interval = 2000
-label = Repo : %output%
+exec = ~/.config/polybar/polybar-pacman.sh
+interval = 86400
+
+label = %output%
 format-foreground = ${colors.blue}
 format-background = ${colors.pink}
-format-prefix = "󰧩"
+format-prefix = "󰧩 "
 format-prefix-foreground = #FFBB00
-;click-left = /usr/local/bin/update.sh execute
 
+click-left = ~/.config/polybar/polybar-pacman.sh update
 
 
 
@@ -414,6 +421,15 @@ ramp-capacity-foreground = #ffffff
 ; Colors change from color line to your
 
 
+
+;--------- WIFI -----------
+[module/wifi-switcher]
+type = custom/script
+exec = ~/.config/polybar/polybar-wifi.sh
+interval = 3
+click-left = kitty -e nmtui
+format-underline = ${colors.CYAN}
+format-foreground = ${colors.CYAN}
 
 
 ; ---------- SETTINGS ----------

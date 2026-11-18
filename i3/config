@@ -325,29 +325,35 @@ assign [class="sun-awt-X11-XFramePeer"] $ws5
 assign [class="carburetor"] $ws17
 assign [class="nekoray"] $ws17
 assign [class="Windscribe"] $ws17
+for_window [class="Windscribe" instance="windscribe"] floating enable focus_on_window_activation none
+assign [class="utorrent.exe"] $ws17
+for_window [class="utorrent.exe"] floating enable
 
 
 # --------------------- set monitor always be turn on ---------------
 exec_always --no-startup-id xset -dpms
 exec_always --no-startup-id xset s off  
 
-#exec_always "setxkbmap -layout us,fa"
 # exec_always --no-startup-id setxkbmap -layout "us,ir" -option "grp:alt_shift_toggle"
-exec_always --no-startup-id setxkbmap -layout "us,ir" -option  "grp:win_space_toggle"
-#exec_always --no-startup-id kbdd
-#bindsym $mod+space exec "kbdd -n"
+#exec_always --no-startup-id setxkbmap -layout "us,ir" -option  "grp:win_space_toggle"
+exec --no-startup-id setxkbmap -layout "us,ir" -option "grp:win_space_toggle"
 
-# polybar
+
+# macOS capsules: persistent light/dark theme; launch.sh serializes restarts
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 #exec_always --no-startup-id ~/.config/polybar/polybar/launch.sh --shapes
 
 # copyq
-exec_always --no-startup-id copyq
+exec_always --no-startup-id sh -c 'pgrep -x copyq >/dev/null || env QT_QPA_PLATFORM=xcb /usr/bin/copyq'
 bindsym $mod+Shift+v exec --no-startup-id copyq toggle
+for_window [class="copyq"] floating enable
 
-# animation for windows
-exec_always --no-startup-id compton
-exec --no-startup-id plank
+# compositor
+# exec_always --no-startup-id compton
+exec_always --no-startup-id sh -c 'exec flock -n "$XDG_RUNTIME_DIR/picom-i3.lock" /usr/bin/picom --backend glx --vsync >/tmp/picom.log 2>&1'
+
+# Plank
+exec_always --no-startup-id ~/.config/i3/center_plank.sh
 
 # xrandr config
 exec_always --no-startup-id xrandr --output eDP-1 --auto --output DP-1 --auto --output HDMI-1 --auto --output DP-1 --left-of eDP-1 --output HDMI-1 --right-of eDP-1

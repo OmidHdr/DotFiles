@@ -1,3 +1,4 @@
+
 # ------ default editor and browser ------
 set -x VISUAL nvim
 set -x EDITOR nvim
@@ -46,6 +47,9 @@ set -x WINIT_X11_SCALE_FACTOR 1.75 # Corrected syntax
 set -x LF_ICONS "tw=:st=:ow=:dt=:di=:fi=:ln=:or=:ex=:*.c=:*.cc=:*.clj=:*.coffee=:*.cpp=:*.css=:*.d=:*.dart=:*.erl=:*.exs=:*.fs=:*.go=:*.h=:*.hh=:*.hpp=:*.hs=:*.html=:*.java=:*.jl=:*.js=:*.json=:*.lua=:*.md=:*.php=:*.pl=:*.pro=:*.py=:*.rb=:*.rs=:*.scala=:*.ts=:*.vim=:*.cmd=:*.ps1=:*.sh=:*.bash=:*.zsh=:*.fish=:*.tar=:*.tgz=:*.arc=:*.arj=:*.taz=:*.lha=:*.lz4=:*.lzh=:*.lzma=:*.tlz=:*.txz=:*.tzo=:*.t7z=:*.zip=:*.z=:*.dz=:*.gz=:*.lrz=:*.lz=:*.lzo=:*.xz=:*.zst=:*.tzst=:*.bz2=:*.bz=:*.tbz=:*.tbz2=:*.tz=:*.deb=:*.rpm=:*.jar=:*.war=:*.ear=:*.sar=:*.rar=:*.alz=:*.ace=:*.zoo=:*.cpio=:*.7z=:*.rz=:*.cab=:*.wim=:*.swm=:*.dwm=:*.esd=:*.jpg=:*.jpeg=:*.mjpg=:*.mjpeg=:*.gif=:*.bmp=:*.pbm=:*.pgm=:*.ppm=:*.tga=:*.xbm=:*.xpm=:*.tif=:*.tiff=:*.png=:*.svg=:*.svgz=:*.mng=:*.pcx=:*.mov=:*.mpg=:*.mpeg=:*.m2v=:*.mkv=:*.webm=:*.ogm=:*.mp4=:*.m4v=:*.mp4v=:*.vob=:*.qt=:*.nuv=:*.wmv=:*.asf=:*.rm=:*.rmvb=:*.flc=:*.avi=:*.fli=:*.flv=:*.gl=:*.dl=:*.xcf=:*.xwd=:*.yuv=:*.cgm=:*.emf=:*.ogv=:*.ogx=:*.aac=:*.au=:*.flac=:*.m4a=:*.mid=:*.midi=:*.mka=:*.mp3=:*.mpc=:*.ogg=:*.ra=:*.wav=:*.oga=:*.opus=:*.spx=:*.xspf=:*.pdf=:*.nix=:"
 
 set -x LC_ALL en_US.UTF-8
+
+# Delete All errors
+set -gx STARSHIP_LOG error
 
 set -x ___MY_VMOPTIONS_SHELL_FILE "$HOME/.jetbrains.vmoptions.sh"
 if test -f "$___MY_VMOPTIONS_SHELL_FILE"
@@ -140,6 +144,12 @@ starship init fish | source
 set -gx GPG_TTY (tty)
 
 
+# -------------------- vpn -----------------------------
+#alias --save vpn-un 'windscribe-cli connect "Manchester - United" tcp:443'
+#alias --save vpn-ca 'windscribe-cli connect CA tcp:8080'
+#alias --save vpn-off 'windscribe-cli disconnect'
+#alias --save vpn-status 'windscribe-cli status'
+
 # ===================== FUZZY FILE MANAGER =====================
 
 # ---------------------------------------------------------
@@ -167,14 +177,6 @@ function _fuzzy_resolve_scope
 end
 
 
-function _fuzzy_recursive_option
-    printf '%s\n' \
-        'YES (Include subdirectories)' \
-        'NO (Current directory only)' |
-        fzf --exact --prompt='Search inside subdirectories? > '
-end
-
-
 function _fuzzy_destination
     set -l scope (_fuzzy_scope)
 
@@ -183,25 +185,12 @@ function _fuzzy_destination
     end
 
     set -l base (_fuzzy_resolve_scope "$scope")
-    set -l rec_opt (_fuzzy_recursive_option)
 
-    if test -z "$rec_opt"
-        return 1
-    end
-
-    if string match -q 'YES*' "$rec_opt"
-        fd -H -t d . "$base" 2>/dev/null |
-            fzf --exact \
-                --prompt='Destination > ' \
-                --preview 'ls -la -- {}' \
-                --preview-window=up:40%:wrap
-    else
-        fd -H -t d --max-depth 1 . "$base" 2>/dev/null |
-            fzf --exact \
-                --prompt='Destination > ' \
-                --preview 'ls -la -- {}' \
-                --preview-window=up:40%:wrap
-    end
+    fd -H -t d . "$base" 2>/dev/null |
+        fzf --exact \
+            --prompt='Destination > ' \
+            --preview 'ls -la -- {}' \
+            --preview-window=up:40%:wrap
 end
 
 
@@ -214,25 +203,15 @@ function _fuzzy_select_items
     end
 
     set -l base (_fuzzy_resolve_scope "$scope")
-    set -l rec_opt (_fuzzy_recursive_option)
-
-    if test -z "$rec_opt"
-        return 1
-    end
-
-    set -l depth_arg
-    if not string match -q 'YES*' "$rec_opt"
-        set depth_arg --max-depth 1
-    end
 
     if test "$type" = "FILE"
-        fd -H -t f $depth_arg . "$base" 2>/dev/null |
+        fd -H -t f . "$base" 2>/dev/null |
             fzf --multi --exact \
                 --prompt='Select file(s) > ' \
                 --preview 'file --brief -- {}' \
                 --preview-window=up:25%:wrap
     else
-        fd -H -t d $depth_arg . "$base" 2>/dev/null |
+        fd -H -t d . "$base" 2>/dev/null |
             fzf --multi --exact \
                 --prompt='Select directory(ies) > ' \
                 --preview 'ls -la -- {}' \
@@ -358,6 +337,8 @@ function fmv
     set -l source_string (_fuzzy_escape_items $items)
     set -l escaped_destination (string escape -- "$destination")
 
+    # rsync provides real percentage progress. After a successful copy,
+    # remove the original source(s), which makes the operation a move.
     set -l command \
         "rsync -ah --info=progress2 --remove-source-files $source_string $escaped_destination/ && find $source_string -type d -empty -delete 2>/dev/null"
 
@@ -383,19 +364,9 @@ function fcd
     end
 
     set -l base (_fuzzy_resolve_scope "$scope")
-    set -l rec_opt (_fuzzy_recursive_option)
-
-    if test -z "$rec_opt"
-        return 1
-    end
-
-    set -l depth_arg
-    if not string match -q 'YES*' "$rec_opt"
-        set depth_arg --max-depth 1
-    end
 
     set -l destination (
-        fd -H -t d $depth_arg . "$base" 2>/dev/null |
+        fd -H -t d . "$base" 2>/dev/null |
         fzf --exact \
             --prompt='Directory > ' \
             --preview 'ls -la -- {}' \
@@ -406,7 +377,7 @@ function fcd
         return 1
     end
 
-    builtin cd -- "$destination"
+    cd -- "$destination"
 end
 
 
@@ -423,19 +394,9 @@ function fopen
     end
 
     set -l base (_fuzzy_resolve_scope "$scope")
-    set -l rec_opt (_fuzzy_recursive_option)
-
-    if test -z "$rec_opt"
-        return 1
-    end
-
-    set -l depth_arg
-    if not string match -q 'YES*' "$rec_opt"
-        set depth_arg --max-depth 1
-    end
 
     set -l file (
-        fd -H -t f $depth_arg . "$base" 2>/dev/null |
+        fd -H -t f . "$base" 2>/dev/null |
         fzf --exact \
             --prompt='Open file > ' \
             --preview 'file --brief -- {}' \
@@ -500,19 +461,9 @@ function fpath
     end
 
     set -l base (_fuzzy_resolve_scope "$scope")
-    set -l rec_opt (_fuzzy_recursive_option)
-
-    if test -z "$rec_opt"
-        return 1
-    end
-
-    set -l depth_arg
-    if not string match -q 'YES*' "$rec_opt"
-        set depth_arg --max-depth 1
-    end
 
     set -l file (
-        fd -H -t f $depth_arg . "$base" 2>/dev/null |
+        fd -H -t f . "$base" 2>/dev/null |
         fzf --exact \
             --prompt='Select file > ' \
             --preview 'file --brief -- {}' \
@@ -740,19 +691,9 @@ function fsize
     end
 
     set -l base (_fuzzy_resolve_scope "$scope")
-    set -l rec_opt (_fuzzy_recursive_option)
-
-    if test -z "$rec_opt"
-        return 1
-    end
-
-    set -l depth_arg
-    if not string match -q 'YES*' "$rec_opt"
-        set depth_arg --max-depth 1
-    end
 
     set -l item (
-        fd -H $depth_arg . "$base" 2>/dev/null |
+        fd -H . "$base" 2>/dev/null |
         fzf --exact \
             --prompt='Size > ' \
             --preview 'du -sh -- {} 2>/dev/null'
@@ -780,19 +721,9 @@ function finfo
     end
 
     set -l base (_fuzzy_resolve_scope "$scope")
-    set -l rec_opt (_fuzzy_recursive_option)
-
-    if test -z "$rec_opt"
-        return 1
-    end
-
-    set -l depth_arg
-    if not string match -q 'YES*' "$rec_opt"
-        set depth_arg --max-depth 1
-    end
 
     set -l item (
-        fd -H $depth_arg . "$base" 2>/dev/null |
+        fd -H . "$base" 2>/dev/null |
         fzf --exact \
             --prompt='Info > ' \
             --preview 'file -- {}'
@@ -822,19 +753,9 @@ function frename
     end
 
     set -l base (_fuzzy_resolve_scope "$scope")
-    set -l rec_opt (_fuzzy_recursive_option)
-
-    if test -z "$rec_opt"
-        return 1
-    end
-
-    set -l depth_arg
-    if not string match -q 'YES*' "$rec_opt"
-        set depth_arg --max-depth 1
-    end
 
     set -l item (
-        fd -H $depth_arg . "$base" 2>/dev/null |
+        fd -H . "$base" 2>/dev/null |
         fzf --exact \
             --prompt='Rename > ' \
             --preview 'ls -ld -- {}'
@@ -913,6 +834,7 @@ function fdel
         return 1
     end
 
+    # Delete with byte-based progress. This avoids rm's lack of a progress meter.
     set -l total_bytes 0
     for item in $items
         if test -d "$item"
@@ -1050,6 +972,7 @@ function farchive
         set -a relative_items (realpath --relative-to="$common" -- "$item")
     end
 
+    # Calculate total input size for tar progress.
     set -l total_bytes 0
     for item in $items
         if test -d "$item"
@@ -1167,19 +1090,9 @@ function fextract
     end
 
     set -l base (_fuzzy_resolve_scope "$scope")
-    set -l rec_opt (_fuzzy_recursive_option)
-
-    if test -z "$rec_opt"
-        return 1
-    end
-
-    set -l depth_arg
-    if not string match -q 'YES*' "$rec_opt"
-        set depth_arg --max-depth 1
-    end
 
     set -l archive (
-        fd -H -t f $depth_arg . "$base" 2>/dev/null |
+        fd -H -t f . "$base" 2>/dev/null |
         grep -Ei '\.(zip|tar|tgz|tar\.gz|tar\.xz|txz|7z|rar)$' |
         fzf --exact \
             --prompt='Extract > ' \
@@ -1196,6 +1109,8 @@ function fextract
         return 1
     end
 
+    # 7z supports ZIP, 7Z, TAR.GZ, TAR.XZ and RAR and provides a real
+    # overall percentage progress indicator.
     if not command -q 7z
         echo "7z is required for extraction progress. Install it with: sudo pacman -S 7zip"
         return 1

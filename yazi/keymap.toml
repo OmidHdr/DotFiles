@@ -59,10 +59,10 @@ run  = [ '''
 desc = "mount phone"
 
 [[mgr.prepend_keymap]]
-on   = [ "m", "S" ]
-run  = [ '''
-          shell 'sh -c '\''echo "{ \"command\": [\"sub-add\", \"$1\"] }" | socat - /tmp/mpvsocket'\'' _ "$1"'
-       ''' ]
+on = [ "m", "S" ]
+run = '''
+shell 'printf '\''{"command":["sub-add","%s"]}\n'\'' "$1" | socat - /tmp/mpvsocket' -- "$1"
+'''
 desc = "Add Subtitle"
 
 [[mgr.prepend_keymap]]
