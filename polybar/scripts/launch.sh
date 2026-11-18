@@ -19,6 +19,9 @@ ln -sfn "$theme.ini" "$base/themes/current.ini"
 dpi=$(xrdb -query | awk '/Xft.dpi:/ {print int($2); exit}')
 export BAR_DPI=${POLYBAR_DPI:-${dpi:-96}}
 scale=$BAR_DPI
+export GLOBAL_MENU_CACHE="$cache"
+export PYTHONDONTWRITEBYTECODE=1
+python3 "$base/scripts/menu_context.py"
 export BAR_HEIGHT=$((30*scale/96)) BAR_TOP=$((8*scale/96)) RESERVE_HEIGHT=$((46*scale/96))
 while read -r MONITOR geometry rest; do
  export MONITOR
@@ -27,7 +30,10 @@ while read -r MONITOR geometry rest; do
  export CENTER_WIDTH=$((148*scale/96))
  export CENTER_X=$(((width-CENTER_WIDTH)/2))
  max=$((CENTER_X-LEFT_X-16*scale/96))
- export LEFT_WIDTH=$(python3 "$base/scripts/left-width.py" "$MONITOR" "$scale")
+ read -r LEFT_WIDTH GLOBAL_MENU_TIER < <(
+  python3 "$base/scripts/left-width.py" "$MONITOR" "$scale" "$max"
+ )
+ export LEFT_WIDTH GLOBAL_MENU_TIER
  export RIGHT_WIDTH=$((424*scale/96))
  # Preserve room for the battery widget on systems that have one.
  for supply in /sys/class/power_supply/*/type; do

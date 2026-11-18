@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Polybar Settings
+Comment=Change Polybar appearance and Global Menu visibility
+Exec=polybar-settings
+Icon=io.github.polybar.Settings
+Terminal=false
+Categories=Settings;DesktopSettings;
+StartupWMClass=io.github.polybar.Settings
+StartupNotify=true

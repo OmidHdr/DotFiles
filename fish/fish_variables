@@ -8,7 +8,7 @@ SETUVAR AGNOSTER_ICON_ROOT:\u26a1
 SETUVAR AGNOSTER_SEGMENT_SEPARATOR:\x1e\u2502
 SETUVAR --export EDITOR:nvim
 SETUVAR --export VISUAL:nvim
-SETUVAR __fish_initialized:3400
+SETUVAR __fish_initialized:4300
 SETUVAR _fisher_hauleth_2F_agnoster_files:\x7e/\x2econfig/fish/functions/agnoster\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_mode_prompt\x2efish\x1e\x7e/\x2econfig/fish/functions/fish_prompt\x2efish
 SETUVAR _fisher_plugins:hauleth/agnoster
 SETUVAR _fisher_upgraded_to_4_4:\x1d

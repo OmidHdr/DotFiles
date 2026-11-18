@@ -48,6 +48,20 @@ Actual i3 workspace names are numeric. Exact matching is used; mapping entry ind
 
 The left capsule preserves Apple → icons, real rounded capsule corners, and round blue/red icon highlights. The Apple glyph and system icons retain installed font fallbacks. The width helper measures the original glyphs, including the IcoMoon and Font Awesome brand glyphs, rather than assuming a monospace font.
 
+## Global Menu
+
+The full left capsule shows Apple, Finder, File, Edit, View, Go, Window, Help, and the workspace icons. On narrow displays, an ellipsis gives access to sections hidden by the compact layout. Use the arrow keys and Enter to navigate and Escape to dismiss.
+
+Finder provides file-manager shortcuts. When the focused X11 window publishes a usable GTK GMenu or Canonical dbusmenu export, Finder also includes an application submenu. File, Edit, View, Go, Window, and Help use matching native sections when available, with desktop actions as the fallback. See [the verification report](GLOBAL_MENU_FINAL_REPORT.md) for application coverage and rollback instructions.
+
+## Polybar Settings
+
+Open **Apple → Polybar Settings…**, choose **Polybar Settings** from the application launcher, or run `polybar-settings`. The two appearance cards use the existing theme switcher. The Global Menu switch leaves Apple and the workspace icons available in both states and updates every left capsule.
+
+Visibility is saved as `show` or `hide` in `${XDG_CONFIG_HOME:-$HOME/.config}/polybar/global-menu-visibility`. A missing or invalid preference defaults to showing the menu. The existing `polybar-theme` command and Apple right-click shortcut remain available.
+
+See [the settings report](POLYBAR_SETTINGS_FINAL_REPORT.md) for verification, screenshots, launcher installation, and rollback.
+
 ## Themes and runtime
 
 ```sh
@@ -57,7 +71,7 @@ polybar-theme toggle
 polybar-theme status
 ```
 
-Apple click toggles themes. The same commands work from Fish. Existing i3 autostart still runs `~/.config/polybar/launch.sh`; it starts a single listener, protected by flock. The theme controller and listener share the control lock, so a theme switch cannot race a left-bar replacement. The listener verifies a PID's actual Polybar command/config before terminating it, copies that bar's current monitor/DPI environment, and updates its individual PID file. Child wait threads prevent zombies.
+Left-click Apple to open the system menu. Right-click Apple or use Apple → Appearance to switch themes. The same commands work from Fish. Existing i3 autostart still runs `~/.config/polybar/launch.sh`; it starts a single listener, protected by flock. The theme controller and listener share the control lock, so a theme switch cannot race a left-bar replacement. The listener verifies a PID's actual Polybar command/config before terminating it, copies that bar's current monitor/DPI environment, and updates its individual PID file. Child wait threads prevent zombies.
 
 Logs: `~/.cache/polybar-menu/`. Individual PID files are `MONITOR-left.pid`, `MONITOR-center.pid`, etc. The current three-monitor setup has 12 intended Polybar instances: three capsules plus a transparent reservation dock per output. Theme state is `~/.local/state/polybar-menu/theme`. The center VPN detection/script and geometry are unchanged.
 

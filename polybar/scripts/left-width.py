@@ -1,45 +1,85 @@
 #!/usr/bin/env python3
-"""Measure Apple and native i3 icon labels using the same mapping as Polybar."""
-import configparser, json, math, subprocess, sys
-from pathlib import Path
-from PIL import ImageFont
-monitor, dpi = sys.argv[1], int(sys.argv[2])
-def font(family, points):
- path = subprocess.check_output(['fc-match', '-f', '%{file}', family], text=True)
- return ImageFont.truetype(path, round(points*dpi/72))
-icons = font('Symbols Nerd Font', 11)
-workspace_icons = font('Font Awesome 5 Free:style=Solid', 10)
-brands = font('Font Awesome 5 Brands', 10)
-icomoon = font('icomoon', 10)
-from fontTools.ttLib import TTFont
-faces = []
-for family, face in [('Font Awesome 5 Free:style=Solid', workspace_icons), ('Font Awesome 5 Brands', brands), ('icomoon', icomoon)]:
- path = subprocess.check_output(['fc-match','-f','%{file}',family],text=True)
- faces.append((TTFont(path).getBestCmap(), face))
-def glyph_width(glyph):
- for cmap, face in faces:
-  if ord(glyph) in cmap: return face.getlength(glyph)
- return icons.getlength(glyph)
-circle = font('Symbols Nerd Font', 18)
-config = configparser.ConfigParser(interpolation=None, strict=False)
-base = Path.home()/'.config/polybar'
-config.read_string('[includes]\n' + (base/'config.ini').read_text())
-config.read([base/'modules.ini'])
-bar = config['bar/left']
-apple = config['module/apple']
-apple_pattern = bar[f"font-{apple.getint('format-font') - 1}"].split(';', 1)[0]
-apple_family, apple_size = apple_pattern.rsplit(':size=', 1)
-apple_font = font(apple_family, float(apple_size))
-module = config['module/i3']
-mapping = dict(value.split(';', 1) for key,value in module.items() if key.startswith('ws-icon-') and key != 'ws-icon-default')
-workspaces = json.loads(subprocess.check_output(['i3-msg', '-t', 'get_workspaces'], text=True))
-apple_glyph, apple_offset = apple['format'].split('%{O', 1)
-width = apple_font.getlength(apple_glyph)
-width += sum(int(value.removesuffix('px')) for value in (
- bar['padding-left'], bar['padding-right'], apple_offset.removesuffix('}')
-))
-for w in workspaces:
- if w['output'] == monitor:
-  glyph = mapping.get(w['name'], module['ws-icon-default'])
-  width += circle.getlength('\uf111') + glyph_width(glyph) - 4.5*dpi/72
-print(math.ceil(width))
+"""Measure the actual Apple, Global Menu, and native workspace format runs."""
+import configparser
+import math
+import re
+import sys
+
+sys.dont_write_bytecode = True
+
+from bar_preferences import BASE, menu_visible
+from font_metrics import Fonts
+from menu_context import MENU_TIERS, i3_query, menu_format
+
+TAGS = re.compile(r"%\{([^}]*)\}")
+EDGE = 13
+
+
+def extent(raw, dpi, space=0):
+    if raw.endswith("pt"):
+        return int(float(raw[:-2]) * dpi / 72)
+    if raw.endswith("px"):
+        return int(float(raw[:-2]))
+    return int(raw) * space
+
+
+def measure_format(text, fonts, dpi):
+    position, ink, current, transparent = 0, 0, 0, False
+    for index, part in enumerate(TAGS.split(text)):
+        if index % 2 == 0:
+            advance, end = fonts.measure(part, current)
+            ink = max(ink, position + end) if end and not transparent else ink
+            position += advance
+            continue
+        for tag in part.split():
+            if tag.startswith("O"):
+                position += extent(tag[1:], dpi)
+            elif tag.startswith("F"):
+                transparent = tag[1:] == "#00000000"
+            elif tag.startswith("T"):
+                current = max(0, int(tag[1:]) - 1) if tag[1:].isdigit() else 0
+    return position, ink
+
+
+def left_layout(monitor, dpi, maximum, workspaces, visible):
+    config = configparser.ConfigParser(interpolation=None, strict=False)
+    config.read_string("[includes]\n" + (BASE / "config.ini").read_text())
+    config.read([BASE / "modules.ini", BASE / "themes/current.ini"])
+    bar = dict(config["bar/base"]) | dict(config["bar/left"])
+    module = config["module/i3"]
+    apple = config["module/apple"]
+    patterns = [bar[f"font-{index}"].rsplit(";", 1)[0]
+                for index in range(sum(key.startswith("font-") for key in bar))]
+    icons = dict(value.split(";", 1) for key, value in module.items()
+                 if key.startswith("ws-icon-") and key != "ws-icon-default")
+    selected = [w for w in workspaces if not module.getboolean("pin-workspaces")
+                or w["output"] == monitor or (module.getboolean("show-urgent", fallback=False)
+                                               and w.get("urgent"))]
+    if module.getboolean("index-sort"):
+        selected.sort(key=lambda w: w.get("num", -1))
+    # All four states have the same advance. Use the icon itself as the
+    # padding reference, with its focus highlight still included in advance.
+    label = config["workspace-labels"]["unfocused"]
+    separator = module.get("label-separator", "")
+    workspace = separator.join(label.replace("%icon%", icons.get(w["name"].strip(), module["ws-icon-default"]))
+                               for w in selected)
+    apple = f'%{{T{apple["format-font"]}}}{apple["format"].strip(chr(34))}%{{T-}}'
+    with Fonts(patterns, dpi) as fonts:
+        space = int(fonts.measure(" ", 0)[0])
+        left = extent(bar["padding-left"], dpi, space)
+        right = extent(bar["padding-right"], dpi, space)
+        margins = sum(extent(bar.get(f"module-margin-{side}", bar["module-margin"]), dpi, space)
+                      for side in ("left", "right"))
+        for tier in (*MENU_TIERS, "off") if visible else ("off",):
+            menu = menu_format(tier, clickable=False)
+            advance, ink = measure_format(apple + menu + workspace, fonts, dpi)
+            units = 1 + bool(menu) + bool(workspace)
+            width = math.ceil(left + margins * units + max(advance + right, ink + EDGE))
+            if width <= maximum or tier == "off":
+                return min(width, maximum), tier
+
+
+if __name__ == "__main__":
+    monitor, dpi, maximum, *preference = sys.argv[1:]
+    visible = preference[0] == "show" if preference else menu_visible()
+    print(*left_layout(monitor, int(dpi), int(maximum), i3_query("get_workspaces"), visible))
