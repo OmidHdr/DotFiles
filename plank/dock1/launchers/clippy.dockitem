@@ -3,9 +3,21 @@
 [PlankDockItemPreferences]
 #The uri for this item.
 Launcher=docklet://clippy
+#The sort order for directory items.
+SortBy=name
+#The style for directory items.
+DirectoryStyle=0
+#Show hidden files.
+ShowHiddenFiles=false
+#Use large icons.
+LargeIcons=false
 
 [DockyClippyPreferences]
 #How many recent clipboard entries to keep.
 MaxEntries=15
 #If it should track the primary (mouse selection) clipboard.
 TrackMouseSelections=false
+#Track images in the clipboard.
+TrackImages=true
+#Disable clipboard tracking.
+DisableTracking=false
