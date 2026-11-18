@@ -1,0 +1,50 @@
+polybar|notice:  Parsing config file: /home/h0p3/.config/polybar/config-macos-light
+polybar|notice:  Listening for IPC messages (PID: 1278652)
+polybar|notice:  Loading module 'brand' of type 'custom/text'
+polybar|warn:  The config parameter `module/brand.content` is deprecated, use `module/brand.format` instead.
+polybar|notice:  Loading module 'i3' of type 'internal/i3'
+polybar|notice:  Loading module 'vpn' of type 'custom/script'
+polybar|notice:  Loading module 'pulseaudio' of type 'internal/pulseaudio'
+polybar|notice:  pulseaudio: using default sink alsa_output.pci-0000_00_1f.3.analog-stereo
+polybar|notice:  Loading module 'battery' of type 'custom/script'
+polybar|notice:  Loading module 'date' of type 'internal/date'
+polybar|notice:  Loaded 6 modules
+polybar|notice:  Loaded font "sans:style=Regular:pixelsize=11" (name=Noto Sans, offset=2, file=/usr/share/fonts/noto/NotoSans-Regular.ttf)
+polybar|notice:  Loaded font "sans:style=Bold:pixelsize=11" (name=Noto Sans, offset=2, file=/usr/share/fonts/noto/NotoSans-Bold.ttf)
+polybar|warn:  Ignoring restack of i3 window (not needed when `override-redirect = false`)
+polybar|warn:  Dropping unmatched character '◉' (U+25c9) in '  ◉  '
+polybar|warn:  Dropping unmatched character '◉' (U+25c9) in '  ◉  '
+polybar|warn:  Dropping unmatched character '◉' (U+25c9) in '  ◉  '
+polybar|warn:  Dropping unmatched character '●' (U+25cf) in '● VPN ?'
+polybar|notice:  Received signal(15): Terminated
+polybar|notice:  Termination signal received, shutting down...
+polybar|warn:  module/i3: Attempting to reconnect socket (reason: Unexpected EOF while reading header)
+polybar|notice:  Parsing config file: /home/h0p3/.config/polybar/config-macos-light
+polybar|notice:  Listening for IPC messages (PID: 1280394)
+polybar|notice:  Loading module 'brand' of type 'custom/text'
+polybar|warn:  The config parameter `module/brand.content` is deprecated, use `module/brand.format` instead.
+polybar|notice:  Loading module 'i3' of type 'internal/i3'
+polybar|notice:  Loading module 'vpn' of type 'custom/script'
+polybar|notice:  Loading module 'pulseaudio' of type 'internal/pulseaudio'
+polybar|notice:  pulseaudio: using default sink alsa_output.pci-0000_00_1f.3.analog-stereo
+polybar|notice:  Loading module 'battery' of type 'custom/script'
+polybar|notice:  Loading module 'date' of type 'internal/date'
+polybar|notice:  Loaded 6 modules
+polybar|notice:  Loaded font "sans:style=Regular:pixelsize=11" (name=Noto Sans, offset=2, file=/usr/share/fonts/noto/NotoSans-Regular.ttf)
+polybar|notice:  Loaded font "sans:style=Bold:pixelsize=11" (name=Noto Sans, offset=2, file=/usr/share/fonts/noto/NotoSans-Bold.ttf)
+polybar|warn:  Ignoring restack of i3 window (not needed when `override-redirect = false`)
+polybar|warn:  Dropping unmatched character '◉' (U+25c9) in '  ◉  '
+polybar|warn:  Dropping unmatched character '◉' (U+25c9) in '  ◉  '
+polybar|warn:  Dropping unmatched character '◉' (U+25c9) in '  ◉  '
+polybar|warn:  Dropping unmatched character '●' (U+25cf) in '● VPN ?'
+polybar|warn:  Dropping unmatched character '◉' (U+25c9) in '  ◉  '
+polybar|warn:  Dropping unmatched character '●' (U+25cf) in '● VPN ?'
+polybar|warn:  Dropping unmatched character '◉' (U+25c9) in '  ◉  '
+polybar|warn:  Dropping unmatched character '●' (U+25cf) in '● VPN ?'
+polybar|warn:  Dropping unmatched character '◉' (U+25c9) in '  ◉  '
+polybar|warn:  Dropping unmatched character '●' (U+25cf) in '● VPN ?'
+polybar|warn:  Dropping unmatched character '◉' (U+25c9) in '  ◉  '
+polybar|warn:  Dropping unmatched character '●' (U+25cf) in '● VPN ?'
+polybar|notice:  Received signal(15): Terminated
+polybar|notice:  Termination signal received, shutting down...
+polybar|warn:  module/i3: Attempting to reconnect socket (reason: Unexpected EOF while reading header)

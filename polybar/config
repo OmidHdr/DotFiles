@@ -39,7 +39,6 @@ LIGHT_CORAL = #F08088
 CORAL_ORANGE = #af3a03
 ORANGE_RED = #FF4500
 DARK_ORANGE = #C76E00
-LIGHT_ORANGE = #e2d183
 
 ; --- LIGHT COLOR ---
 WHITE = #F8F8F2
@@ -54,7 +53,6 @@ DARK_KHAKI = #BDB76B
 GOLD = #EFBF04
 YELLOW = #e2d810
 YELLOW_GREEN = #CCFF00
-LIGHT_YELLOW = #fff49b
 
 LIME = #00FF00
 LAWN_GREEN = #7CFC00
@@ -76,7 +74,6 @@ DEEP_BLUE = #79a7d3
 
 ; --- RED ---
 LIGHT_RED = #ff0000
-LIGHTER_RED = #dc493a
 CRIMSON = #DC143C
 FIRE_BRICK = #B22222
 ;pink = #AA336A
@@ -105,25 +102,26 @@ radius = 9.0
 fixed-center = true
 enable-ipc = true
 
-background = ${colors.DEEP_BLUE}
+background = ${colors.DARK_CYAN}
 foreground = ${colors.foreground}
 line-size = 3
 
 border-size = 1
 border-color = #0D00564d
 
-padding-left = 5
-padding-right = 10
+padding-left = 2
+padding-right = 2
 
-module-margin-left = 5
-module-margin-right = 3
+module-margin-left = 1
+module-margin-right = 0
 
 font-0 = Droid Sans Mono:style=Regular:pixelsize=10;2
-font-1 = Font Awesome 7 Brands Regular:style=Regular:pixelsize=12;2
+font-1 = Font Awesome 5 Brands Regular:style=Regular:pixelsize=12;2
 font-2 = siji:style=Regular:pixelsize=24;2
-font-3 = Font Awesome 7 Free:pixelsize=12;2
-font-4 = Font Awesome 7 Free Solid:pixelsize=12;2
-font-5 = Font Awesome 7 Brands:pixelsize=12;2
+font-3 = Font Awesome 5 Free:pixelsize=12;2
+font-4 = Font Awesome 5 Free Solid:pixelsize=12;2
+font-5 = Font Awesome 5 Brands:pixelsize=12;2
+font-6 = icomoon:style=Regular:pixelsize=14;2
 ;________________________________________________________________
 
 
@@ -141,7 +139,7 @@ modules-right = xkeyboard voice battery pulseaudio memory wifi-switcher pacman x
 ; powermenu
 ;separator = |
 tray-position = right
-tray-padding = 4
+tray-padding = 5
 cursor-click = pointer
 eursor-scroll = ns-resize
 
@@ -156,7 +154,7 @@ label-maxlen = 20
 label-empty =
 
 format-foreground = ${colors.foreground}
-format-background = ${colors.DEEP_BLUE}
+format-background = ${colors.DARK_CYAN}
 
 
 
@@ -205,34 +203,34 @@ label-mounted-foreground = ${colors.GOLD}
 ; ---------- ICONS ----------
 [module/i3]
 type = internal/i3
-enable-click = false
+;enable-click = false
 ;enable-scroll = false
 format = <label-state> <label-mode>
 index-sort = true
 wrapping-scroll = false
 ;pin-workspaces = true
 
-ws-icon-0 = 1;
+ws-icon-0 = 1;
 ws-icon-1 = 2;
 ws-icon-2 = 3;
 ws-icon-3 = 4;
 ws-icon-4 = 5;
-ws-icon-5 = 6;
-ws-icon-6 = 7;
+ws-icon-5 = 6;
+ws-icon-6 = 7;
 ws-icon-7 = 8;
 ws-icon-8 = 9;
-ws-icon-9 = 10;
+ws-icon-9 = 10;
 ws-icon-10 = 11;
 ws-icon-11 = 12;
 ws-icon-12 = 13;
 ws-icon-13 = 14;
-ws-icon-14 = 15;
+ws-icon-14 = 15;
 ws-icon-15 = 16;
 ws-icon-16 = 17;
 ; Good Icons maybe useful
 ;; unlock-icon   docker-icon   debug-icon  android-icon  key-icon 
-;; spyder  (ws-icon-15) mask  robot  music  python  
-
+;; spyder  (ws-icon-15) anonymouse  mask  robot  music  python  
+;; steam  github  internet 󰖟 terminal      
 label-mode-padding = 5
 label-mode-foreground = #000
 label-mode-background = ${colors.primary}
@@ -240,13 +238,13 @@ label-mode-background = ${colors.primary}
 
 ;--- focused ---
 label-focused =%icon%
-label-focused-foreground = ${colors.LIGHT_RED}
+label-focused-foreground = ${colors.LIME}
 label-focused-underline= ${colors.primary}
-label-focused-padding = 5
+label-focused-padding = 2
 label-mode = ${colors.MOCCASIN}
 ; unfocused = Inactive workspace on any monitor
 label-unfocused = %icon%
-label-unfocused-padding = 5
+label-unfocused-padding = 2
 ; visible = Active workspace on unfocused monitor
 
 ;--- visible ---
@@ -260,7 +258,7 @@ label-visible-padding = ${self.label-focused-padding}
 label-urgent = %icon%
 label-urgent-foreground = ${colors.PURPLE}
 label-urgent-underline = ${colors.PURPLE}
-label-urgent-padding = 5
+label-urgent-padding = 2
 ; Separator in between workspaces
 ; label-separator = |
 ;________________ end icons ________________
@@ -326,7 +324,8 @@ label-foreground = ${colors.BROWN}
 ; ---------- AUDIO ----------
 [module/pulseaudio]
 type = internal/pulseaudio
-format-volume = <label-volume> <bar-volume>
+;format-volume = <label-volume> <bar-volume>
+format-volume = <label-volume>
 format-volume-underline = ${colors.LEMON_CHIFFON}
 label-volume =%percentage%% 
 label-volume-foreground = ${colors.LEMON_CHIFFON}

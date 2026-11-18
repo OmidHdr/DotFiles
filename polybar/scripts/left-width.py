@@ -22,9 +22,9 @@ def glyph_width(glyph):
  return icons.getlength(glyph)
 circle = font('Symbols Nerd Font', 18)
 config = configparser.ConfigParser(interpolation=None, strict=False)
-base = Path(__file__).resolve().parents[1]
+base = Path.home()/'.config/polybar'
 config.read_string('[includes]\n' + (base/'config.ini').read_text())
-config.read(base/'modules.ini')
+config.read([base/'modules.ini'])
 bar = config['bar/left']
 apple = config['module/apple']
 apple_pattern = bar[f"font-{apple.getint('format-font') - 1}"].split(';', 1)[0]

@@ -1,0 +1,107 @@
+; macOS-inspired Polybar for i3
+; Launch: polybar -c ~/.config/polybar/config-macos macos
+[colors]
+background = #E61D1F28
+foreground = #F5F5F7
+muted = #A1A1AA
+active = #3A3D4A
+accent = #9CCBFF
+red = #FF6B6B
+
+[bar/macos]
+monitor = ${env:MONITOR:}
+width = 100%
+height = 32
+radius = 0
+fixed-center = true
+bottom = false
+background = ${colors.background}
+foreground = ${colors.foreground}
+line-size = 0
+border-size = 0
+padding-left = 2
+padding-right = 2
+module-margin-left = 1
+module-margin-right = 1
+font-0 = sans:style=Regular:pixelsize=11;2
+font-1 = sans:style=Bold:pixelsize=11;2
+modules-left = apple i3
+modules-center = vpn
+modules-right = pulseaudio battery date
+tray-position = none
+cursor-click = pointer
+enable-ipc = true
+wm-restack = i3
+
+[module/apple]
+type = custom/text
+content = "●"
+content-foreground = ${colors.foreground}
+content-padding = 1
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+label-focused = " %name% "
+label-focused-background = ${colors.active}
+label-focused-foreground = ${colors.foreground}
+label-focused-padding = 1
+label-unfocused = " %name% "
+label-unfocused-foreground = ${colors.muted}
+label-unfocused-padding = 1
+label-visible = " %name% "
+label-visible-foreground = ${colors.foreground}
+label-visible-padding = 1
+label-urgent = " %name% "
+label-urgent-foreground = ${colors.red}
+label-urgent-padding = 1
+label-mode = " %mode% "
+label-mode-foreground = ${colors.accent}
+
+[module/vpn]
+type = custom/script
+exec = ~/.config/polybar/scripts/macos-vpn-status.sh
+interval = 5
+format = <label>
+label = %output%
+label-padding = 1
+
+[module/pulseaudio]
+type = internal/pulseaudio
+format-volume = <label-volume>
+label-volume = "VOL %percentage%%"
+label-volume-foreground = ${colors.foreground}
+label-muted = "MUTED"
+label-muted-foreground = ${colors.muted}
+click-right = pavucontrol
+
+[module/battery]
+type = internal/battery
+; Update these if your battery uses different names (ls /sys/class/power_supply)
+battery = BAT0
+adapter = AC
+full-at = 98
+format-charging = <label-charging>
+format-discharging = <label-discharging>
+format-full = <label-full>
+label-charging = "BAT %percentage%% +"
+label-discharging = "BAT %percentage%%"
+label-full = "BAT %percentage%%"
+
+[module/date]
+type = internal/date
+interval = 5
+date = %a %d %b
+time = %H:%M
+label = "%date%  %time%"
+label-foreground = ${colors.foreground}
+
+[settings]
+screenchange-reload = true
+pseudo-transparency = false
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0

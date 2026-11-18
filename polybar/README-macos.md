@@ -98,7 +98,3 @@ bash ~/.config/polybar/backups/wifi-resize-original-icons-20261116-060647/restor
 The restore script stops the event listener, replaces the bars/configuration with the previous setup, and starts the previous launcher via i3 exec. It does not reload/restart i3 or run any network command. The older full-original backup and original rollback script remain available separately.
 
 References: [i3 IPC](https://i3wm.org/docs/ipc.html), [NetworkManager nmcli](https://networkmanager.dev/docs/api/latest/nmcli).
-
-## Recovery note
-
-The active configuration and this document were recovered from the November 16 and 18 session records. The older screenshots and the historical rollback directory listed above were missing when recovery started. The pre-resolution Git index and working files are in the private recovery backup.
