@@ -1,0 +1,9 @@
+# Workspace alignment progress
+
+- Private pre-edit backup at `/home/h0p3/.local/state/polybar-menu/workspace-alignment-20261120-101442-1f38kV`.
+- Traced workspace labels, native i3 state handling, font fallbacks, and width measurement. The icon starts at a common pen position even though glyph bearings and vertical ink differ.
+- Captured and inspected 3× diagnostic grids for every glyph at 96 DPI and ran the same pixel test at 120 DPI. The old labels put every glyph at a common pen position. At 96 DPI, horizontal ink errors reached +3 px and the terminal exceeded the circle radius by about 1 px. The video camera was +2 px right. The Telegram bounding box was +1 px right, and its coverage-weighted center was +2.34 px right.
+- Added compensated horizontal offsets and original-face font aliases with a 1 px higher baseline for selected glyphs. The measured bounds are within 1 px per axis at both tested DPIs. All advances and circle positions match the original geometry. The width helper retains the original glyph run as its right-edge reference.
+- Passed isolated native i3 tests for workspace 4 and 8 transitions, four simultaneous urgent workspaces, native clicks, and normal i3 urgency clearing with both palettes and Global Menu settings. The isolated listener kept a 487 px capsule through urgency, then resized it to 517 px and back for workspace 99.
+- Verified 150 before/after width and menu-tier comparisons and byte-exact palette files. Applied the configuration with PID-targeted restarts of the three live left capsules. All recorded Polybar PIDs and the live i3 socket matched the backup. Live screenshot widths, Apple and menu regions, and the right-edge pixels matched.
+- Saved the final report, 3× diagnostic grids with guide overlays, native test captures, and live captures.

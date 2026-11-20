@@ -57,12 +57,14 @@ def left_layout(monitor, dpi, maximum, workspaces, visible):
                                                and w.get("urgent"))]
     if module.getboolean("index-sort"):
         selected.sort(key=lambda w: w.get("num", -1))
-    # All four states have the same advance. Use the icon itself as the
-    # padding reference, with its focus highlight still included in advance.
+    # Inline icon alignment offsets cancel out. Measure the original glyph
+    # run so both the slot advance and the right-edge ink reference stay fixed.
     label = config["workspace-labels"]["unfocused"]
     separator = module.get("label-separator", "")
-    workspace = separator.join(label.replace("%icon%", icons.get(w["name"].strip(), module["ws-icon-default"]))
-                               for w in selected)
+    workspace = separator.join(
+        label.replace("%icon%", TAGS.sub("", icons.get(w["name"].strip(), module["ws-icon-default"])))
+        for w in selected
+    )
     apple = f'%{{T{apple["format-font"]}}}{apple["format"].strip(chr(34))}%{{T-}}'
     with Fonts(patterns, dpi) as fonts:
         space = int(fonts.measure(" ", 0)[0])
